@@ -62,50 +62,6 @@
     return hasSel || hasOther || hasVeto;
   }
 
-  /* ----------------------- Avatars (mini "manga") ----------------------- */
-  // Construit un avatar : soit une image fournie, soit une mascotte SVG.
-  function buildAvatar(cfg) {
-    cfg = cfg || {};
-    if (cfg.img) {
-      return `<img class="avatar-img" src="${escapeHtml(cfg.img)}" alt="" />`;
-    }
-    const skin = cfg.skin || "#c9895b";
-    const hair = cfg.hair || "#241c18";
-    const blush = cfg.blush || "#e0567f";
-    const style = cfg.style || "short";
-
-    let hairBack = "";
-    if (style === "curly") {
-      const pts = [[28,40],[24,56],[28,72],[50,80],[72,72],[76,56],[72,40],
-                   [34,30],[50,26],[66,30],[42,25],[58,25]];
-      hairBack = pts.map((p) =>
-        `<circle cx="${p[0]}" cy="${p[1]}" r="13" fill="${hair}"/>`).join("");
-    } else if (style === "bun") {
-      hairBack = `<circle cx="50" cy="18" r="11" fill="${hair}"/>` +
-                 `<path d="M20 52 Q18 24 50 22 Q82 24 80 52 Q68 34 50 34 Q32 34 20 52 Z" fill="${hair}"/>`;
-    } else { // short
-      hairBack = `<path d="M20 54 Q17 24 50 22 Q83 24 80 54 Q70 34 50 34 Q30 34 20 54 Z" fill="${hair}"/>`;
-    }
-
-    const face  = `<circle cx="50" cy="55" r="27" fill="${skin}"/>`;
-    const ears  = `<circle cx="23" cy="57" r="5" fill="${skin}"/><circle cx="77" cy="57" r="5" fill="${skin}"/>`;
-    const eyes  = `<g fill="#2b1a24"><ellipse cx="40" cy="55" rx="4" ry="5.2"/><ellipse cx="60" cy="55" rx="4" ry="5.2"/></g>` +
-                  `<g fill="#fff"><circle cx="41.6" cy="53.2" r="1.4"/><circle cx="61.6" cy="53.2" r="1.4"/></g>`;
-    const brows = `<g stroke="${hair}" stroke-width="2" stroke-linecap="round">` +
-                  `<path d="M34 47 Q40 44 46 47" fill="none"/><path d="M54 47 Q60 44 66 47" fill="none"/></g>`;
-    const blushEls = `<g fill="${blush}" opacity="0.5"><ellipse cx="34" cy="64" rx="5" ry="3"/><ellipse cx="66" cy="64" rx="5" ry="3"/></g>`;
-    const smile = `<path d="M43 67 Q50 73 57 67" stroke="#7a2b3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
-
-    return `<svg viewBox="0 0 100 100" class="avatar-svg" role="img">` +
-           `${hairBack}${face}${ears}${eyes}${brows}${blushEls}${smile}</svg>`;
-  }
-
-  function coupleAvatar() {
-    const a = (CONFIG.avatars || {});
-    return `<span class="avatar avatar--elle">${buildAvatar(a.elle)}</span>` +
-           `<span class="avatar avatar--lui">${buildAvatar(a.lui)}</span>`;
-  }
-
   /* ----------------------- Message mignon à la validation ----------------------- */
   let sweetTimer = null;
   function showSweet(etape) {
@@ -118,8 +74,7 @@
     }
     let el = $(".sweet-pop");
     if (!el) { el = document.createElement("div"); el.className = "sweet-pop"; document.body.appendChild(el); }
-    el.innerHTML = `<span class="sweet-avatars">${coupleAvatar()}</span>` +
-                   `<span class="sweet-msg">${escapeHtml(msg)}</span>`;
+    el.innerHTML = `<span class="sweet-msg">${escapeHtml(msg)}</span>`;
     void el.offsetWidth;
     el.classList.add("is-visible");
     clearTimeout(sweetTimer);
@@ -137,9 +92,6 @@
   function initIntro() {
     $("#introTitle").textContent = CONFIG.titre;
     $("#introSub").textContent = CONFIG.sousTitre;
-
-    const introAvatars = $("#introAvatars");
-    if (introAvatars) introAvatars.innerHTML = coupleAvatar();
 
     const nameInput = $("#nameInput");
     nameInput.value = state.name;
@@ -411,8 +363,6 @@
 
     const prenom = state.name ? state.name : "toi";
     $("#recapTitle").textContent = "C'est noté, " + prenom + " ! 💕";
-    const recapAvatars = $("#recapAvatars");
-    if (recapAvatars) recapAvatars.innerHTML = coupleAvatar();
 
     $("#recapList").innerHTML = ETAPES.map((etape, n) => {
       const res = stepResult(etape);

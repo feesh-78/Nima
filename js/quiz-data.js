@@ -27,18 +27,6 @@ const CONFIG = {
              "Réponds à quelques questions, dans l'ordre de tes envies, " +
              "et laisse-moi organiser le reste. ✨",
 
-  /* -------------------------------------------------------------------
-     💞 AVATARS DU COUPLE (mini "manga" mignons)
-     - Laisse "img" vide -> une mascotte dessinée (SVG) est affichée.
-     - Dès que tu as de vrais portraits manga : mets le chemin de
-       l'image (ex: "assets/elle.png") dans "img" et elle remplacera
-       la mascotte partout. Idéal : image carrée, fond transparent.
-     ------------------------------------------------------------------- */
-  avatars: {
-    elle: { img: "", skin: "#8d5a3c", hair: "#6f3b2e", style: "curly", blush: "#e0567f" },
-    lui:  { img: "", skin: "#c9895b", hair: "#241c18", style: "short", blush: "#e0567f" },
-  },
-
   /* 💕 Petits messages mignons affichés quand elle valide une étape.
      (Tu peux en ajouter/retirer librement.) */
   messagesMignons: [

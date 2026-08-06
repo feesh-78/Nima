@@ -424,33 +424,6 @@ body {
   line-height: 1.5;
 }
 
-/* ---------- Avatars du couple (mascottes / manga) ---------- */
-.couple {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 2px;
-  margin-bottom: 10px;
-}
-.avatar {
-  display: inline-block;
-  width: 66px;
-  height: 66px;
-}
-.avatar--lui { margin-left: -14px; }
-.avatar-svg, .avatar-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.avatar-img {
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(140, 30, 70, 0.2);
-}
-.couple--intro .avatar { width: 72px; height: 72px; animation: pulse 2.6s ease-in-out infinite; }
-.couple--recap .avatar { width: 62px; height: 62px; }
-
 /* ---------- Message mignon quand elle valide ---------- */
 .sweet-pop {
   position: fixed;
@@ -459,11 +432,10 @@ body {
   transform: translateX(-50%) translateY(-16px);
   display: flex;
   align-items: center;
-  gap: 10px;
   max-width: 90vw;
   background: #fff;
   color: var(--plum);
-  padding: 8px 16px 8px 10px;
+  padding: 10px 18px;
   border-radius: 99px;
   box-shadow: var(--shadow);
   border: 2px solid #ffd0dd;
@@ -473,10 +445,7 @@ body {
   z-index: 60;
 }
 .sweet-pop.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-.sweet-avatars { display: inline-flex; align-items: center; }
-.sweet-avatars .avatar { width: 34px; height: 34px; }
-.sweet-avatars .avatar--lui { margin-left: -10px; }
-.sweet-msg { font-size: 14.5px; font-weight: 700; white-space: nowrap; }
+.sweet-msg { font-size: 14.5px; font-weight: 700; }
 
 /* ---------- Petit toast de confirmation ---------- */
 .toast {
