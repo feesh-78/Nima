@@ -11,13 +11,14 @@
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "surprise-choix-v2";
+  const STORAGE_KEY = "surprise-choix-v3";
 
   const state = {
     name: "",
     step: 0,
     answers: {},   // { etapeId: [index, ...] }  (toujours un tableau)
     others: {},    // { etapeId: "texte libre" }
+    refus: {},     // { etapeId: true }  -> elle a dit « non merci » à cette étape
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -39,6 +40,7 @@
         state.name = data.name || "";
         state.answers = data.answers || {};
         state.others = data.others || {};
+        state.refus = data.refus || {};
         state.step = data.step || 0;
       }
     } catch (e) {}
@@ -49,7 +51,9 @@
     const v = state.answers[id];
     return Array.isArray(v) ? v : (typeof v === "number" ? [v] : []);
   }
+  function isRefused(id) { return state.refus[id] === true; }
   function isAnswered(etape) {
+    if (isRefused(etape.id)) return true; // dire « non » est une réponse valable
     const hasSel = getSel(etape.id).length > 0;
     const hasOther = etape.allowOther && (state.others[etape.id] || "").trim().length > 0;
     return hasSel || hasOther;
@@ -125,6 +129,13 @@
         Continuer <span class="btn-arrow">→</span>
       </button>` : "";
 
+    // Bouton « Non merci » : uniquement si l'étape l'autorise (allowRefus)
+    const refusActive = isRefused(etape.id) ? " is-active" : "";
+    const refusHtml = etape.allowRefus ? `
+      <button class="refus-btn${refusActive}" id="refusBtn">
+        ${escapeHtml(etape.refusLabel || "🙅 Non merci, on passe")}
+      </button>` : "";
+
     $("#questionCard").innerHTML = `
       <span class="q-emoji">${etape.emoji}</span>
       <h2 class="q-title">${escapeHtml(etape.question)}</h2>
@@ -132,6 +143,7 @@
       <div class="options">${optionsHtml}</div>
       ${otherHtml}
       ${continueHtml}
+      ${refusHtml}
     `;
 
     // Clic sur une option
@@ -153,10 +165,30 @@
     if (cont) {
       cont.addEventListener("click", () => {
         if (!isAnswered(etape)) {
-          toast("Choisis au moins une option 😊");
+          toast("Choisis une option, ou clique sur « Non merci » 😊");
           return;
         }
         nextStep();
+      });
+    }
+
+    // Bouton « Non merci »
+    const refusBtn = $("#refusBtn");
+    if (refusBtn) {
+      refusBtn.addEventListener("click", () => {
+        if (isRefused(etape.id)) {
+          // annuler le refus et rester sur l'étape
+          delete state.refus[etape.id];
+          save();
+          renderStep();
+        } else {
+          // enregistrer le refus, effacer les choix, et avancer
+          state.refus[etape.id] = true;
+          state.answers[etape.id] = [];
+          state.others[etape.id] = "";
+          save();
+          nextStep();
+        }
       });
     }
 
@@ -164,6 +196,12 @@
   }
 
   function onOptionClick(etape, idx) {
+    // choisir une option annule un éventuel « non merci »
+    if (isRefused(etape.id)) {
+      delete state.refus[etape.id];
+      const rb = $("#refusBtn");
+      if (rb) rb.classList.remove("is-active");
+    }
     const current = getSel(etape.id);
 
     if (etape.multi) {
@@ -209,13 +247,16 @@
     return ETAPES.every(isAnswered);
   }
 
-  /* ----------------------- Texte d'une réponse ----------------------- */
-  function answerLabels(etape) {
+  /* ----------------------- Résultat d'une étape ----------------------- */
+  const REFUS_LABEL = "🙅 Non, pas cette fois";
+  // Renvoie { refus: bool, labels: [..] }
+  function stepResult(etape) {
+    if (isRefused(etape.id)) return { refus: true, labels: [REFUS_LABEL] };
     const parts = getSel(etape.id).map((i) => etape.options[i]).filter(Boolean);
     const labels = parts.map((o) => o.emoji + " " + o.label);
     const other = (state.others[etape.id] || "").trim();
     if (other) labels.push("✍️ " + other);
-    return labels;
+    return { refus: false, labels: labels };
   }
 
   /* ----------------------- Écran récapitulatif ----------------------- */
@@ -226,10 +267,11 @@
     $("#recapTitle").textContent = "C'est noté, " + prenom + " ! 💕";
 
     $("#recapList").innerHTML = ETAPES.map((etape, n) => {
-      const labels = answerLabels(etape);
-      if (!labels.length) return "";
-      const answersHtml = labels
-        .map((l) => `<span class="recap-chip">${escapeHtml(l)}</span>`)
+      const res = stepResult(etape);
+      if (!res.labels.length) return "";
+      const chipClass = res.refus ? "recap-chip recap-chip--refus" : "recap-chip";
+      const answersHtml = res.labels
+        .map((l) => `<span class="${chipClass}">${escapeHtml(l)}</span>`)
         .join("");
       return `
         <li class="recap-item" style="animation-delay:${n * 0.06}s">
@@ -251,10 +293,10 @@
     let txt = "💕 Mes choix pour notre soirée surprise" + (prenom ? " — " + prenom : "") + "\n";
     txt += "----------------------------------------\n\n";
     ETAPES.forEach((etape) => {
-      const labels = answerLabels(etape);
-      if (!labels.length) return;
+      const res = stepResult(etape);
+      if (!res.labels.length) return;
       txt += etape.emoji + " " + etape.question + "\n";
-      labels.forEach((l) => { txt += "   → " + l + "\n"; });
+      res.labels.forEach((l) => { txt += "   → " + l + "\n"; });
       txt += "\n";
     });
     txt += "Hâte d'y être avec toi ! ❤️";
@@ -285,6 +327,7 @@
       state.step = 0;
       state.answers = {};
       state.others = {};
+      state.refus = {};
       save();
       showScreen("quiz");
       renderStep();

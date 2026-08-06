@@ -48,6 +48,8 @@ const ETAPES = [
     hint: "Films, séries ou documentaires — à toi de choisir l'univers.",
     multi: true,
     allowOther: true,
+    allowRefus: true,
+    refusLabel: "🙅 Aucun, pas de film ce soir",
     otherPlaceholder: "Ajoute tes envies…",
     options: [
       { emoji: "💅", label: "Gossip",           desc: "Potins, glamour et drama" },
@@ -104,6 +106,8 @@ const ETAPES = [
     hint: "Rien d'obligé — juste pour pimenter la complicité. 😉",
     multi: true,
     allowOther: true,
+    allowRefus: true,
+    refusLabel: "🙅 Non merci, pas de coquineries",
     otherPlaceholder: "Une autre idée à me souffler…",
     options: [
       { emoji: "💋", label: "Action ou vérité", desc: "Version tous les deux" },
@@ -120,6 +124,8 @@ const ETAPES = [
     question: "On t'étale quoi sur la peau ? 😏",
     hint: "Pour se faire dévorer tout en douceur.",
     multi: true,
+    allowRefus: true,
+    refusLabel: "🙅 Non merci, on garde ça pour une autre fois",
     options: [
       { emoji: "🥛", label: "Chantilly", desc: "Nuageuse et légère" },
       { emoji: "🍯", label: "Miel",      desc: "Doux et collant… juste ce qu'il faut" },
