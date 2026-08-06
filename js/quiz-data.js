@@ -155,6 +155,7 @@ const ETAPES = [
       { emoji: "🎴", label: "Cartes coquines",  desc: "On pioche, on ose" },
       { emoji: "🔗", label: "Menottes",         desc: "On perd un peu le contrôle 😈" },
       { emoji: "🍓", label: "Se faire dévorer", desc: "Dessert à même la peau" },
+      { emoji: "🎥", label: "Nouvelle position", desc: "On regarde un tuto ensemble et on applique en direct" },
       { emoji: "🙈", label: "Surprise…",        desc: "Laisse-moi te surprendre" },
     ],
   },

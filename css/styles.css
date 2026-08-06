@@ -254,11 +254,57 @@ body {
   width: 42px;
   text-align: center;
 }
-.option-text { display: flex; flex-direction: column; gap: 2px; }
+.option-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .option-label { font-size: 16px; font-weight: 700; color: var(--ink); }
 .option-desc  { font-size: 13px; color: var(--ink-soft); }
-.option-check {
+
+/* Zone d'actions à droite : rang (badge) + veto (✕) */
+.option-actions {
   margin-left: auto;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Bouton veto par réponse */
+.option-veto {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #e6b8c6;
+  background: #fff;
+  color: #b06b86;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.option-veto:hover { border-color: #d9506e; color: #d9506e; }
+.option-veto:active { transform: scale(0.9); }
+.option-veto.is-active {
+  background: #d9506e;
+  border-color: #d9506e;
+  color: #fff;
+}
+
+/* Réponse vetotée : grisée et barrée */
+.option.is-vetoed {
+  opacity: 0.62;
+  border-color: #d9c2cb;
+  border-style: dashed;
+  background: #f6eef1;
+}
+.option.is-vetoed .option-label { text-decoration: line-through; color: var(--ink-soft); }
+.option.is-vetoed:hover { transform: none; }
+
+.option-check {
   flex-shrink: 0;
   width: 26px;
   height: 26px;
@@ -349,6 +395,12 @@ body {
 .recap-chip--refus {
   background: #ece3e8;
   color: var(--plum);
+}
+.recap-chip--veto {
+  background: #f7dfe4;
+  color: #b23a56;
+  text-decoration: line-through;
+  text-decoration-color: rgba(178, 58, 86, 0.55);
 }
 .recap-rank {
   display: inline-flex;

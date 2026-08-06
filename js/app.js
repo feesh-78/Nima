@@ -16,9 +16,10 @@
   const state = {
     name: "",
     step: 0,
-    answers: {},   // { etapeId: [index, ...] }  (toujours un tableau)
+    answers: {},   // { etapeId: [index, ...] }  (ordre = préférence)
     others: {},    // { etapeId: "texte libre" }
-    refus: {},     // { etapeId: true }  -> elle a dit « non merci » à cette étape
+    refus: {},     // { etapeId: true }  -> « non merci » sur toute la thématique
+    vetos: {},     // { etapeId: [index, ...] } -> veto sur des réponses précises
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -41,6 +42,7 @@
         state.answers = data.answers || {};
         state.others = data.others || {};
         state.refus = data.refus || {};
+        state.vetos = data.vetos || {};
         state.step = data.step || 0;
       }
     } catch (e) {}
@@ -56,7 +58,8 @@
     if (isRefused(etape.id)) return true; // dire « non » est une réponse valable
     const hasSel = getSel(etape.id).length > 0;
     const hasOther = etape.allowOther && (state.others[etape.id] || "").trim().length > 0;
-    return hasSel || hasOther;
+    const hasVeto = getVetos(etape.id).length > 0; // n'avoir mis que des vetos compte aussi
+    return hasSel || hasOther || hasVeto;
   }
 
   /* ----------------------- Navigation écrans ----------------------- */
@@ -95,28 +98,39 @@
     $("#progressText").textContent = "Étape " + (state.step + 1) + " sur " + total;
 
     const sel = getSel(etape.id);
+    const vet = getVetos(etape.id);
+    // Le veto par réponse est proposé sur les étapes à choix multiples
+    const perOptionVeto = !!etape.multi;
 
     let hint = etape.hint ? escapeHtml(etape.hint) : "";
     if (etape.multi) {
       hint += (hint ? " " : "") +
-        "<em>Choisis-en une ou plusieurs, dans l'ordre de tes envies 💕</em>";
+        "<em>Classe tes envies dans l'ordre, ou mets ton veto ⛔ sur celles que tu ne veux pas 💕</em>";
     }
     const hintHtml = hint ? `<p class="q-hint">${hint}</p>` : "";
 
     const optionsHtml = etape.options.map((opt, i) => {
       const pos = sel.indexOf(i);
-      const selected = pos !== -1 ? " is-selected" : "";
+      const isVet = vet.indexOf(i) !== -1;
+      const cls = (pos !== -1 ? " is-selected" : "") + (isVet ? " is-vetoed" : "");
       // Pour un choix multiple, on affiche le rang (1, 2, 3…) au lieu d'une coche
       const badge = (etape.multi && pos !== -1) ? String(pos + 1) : "✓";
+      const vetoBtn = perOptionVeto ? `
+            <button class="option-veto${isVet ? " is-active" : ""}" data-veto="${i}"
+                    type="button" aria-label="Poser un veto sur cette option"
+                    title="Non merci pour celle-ci">✕</button>` : "";
       return `
-        <button class="option${selected}" data-index="${i}">
+        <div class="option${cls}" data-index="${i}" role="button" tabindex="0">
           <span class="option-emoji">${opt.emoji}</span>
           <span class="option-text">
             <span class="option-label">${escapeHtml(opt.label)}</span>
             ${opt.desc ? `<span class="option-desc">${escapeHtml(opt.desc)}</span>` : ""}
           </span>
-          <span class="option-check">${badge}</span>
-        </button>`;
+          <span class="option-actions">
+            <span class="option-check">${badge}</span>
+            ${vetoBtn}
+          </span>
+        </div>`;
     }).join("");
 
     const otherHtml = etape.allowOther ? `
@@ -149,9 +163,21 @@
       ${refusHtml}
     `;
 
-    // Clic sur une option
-    $("#questionCard").querySelectorAll(".option").forEach((btn) => {
-      btn.addEventListener("click", () => onOptionClick(etape, parseInt(btn.dataset.index, 10)));
+    // Clic / clavier sur une option (sélection + classement)
+    $("#questionCard").querySelectorAll(".option").forEach((el) => {
+      const idx = parseInt(el.dataset.index, 10);
+      el.addEventListener("click", () => onOptionClick(etape, idx));
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOptionClick(etape, idx); }
+      });
+    });
+
+    // Clic sur le veto d'une option (ne déclenche pas la sélection)
+    $("#questionCard").querySelectorAll(".option-veto").forEach((vb) => {
+      vb.addEventListener("click", (e) => {
+        e.stopPropagation();
+        onVetoClick(etape, parseInt(vb.dataset.veto, 10));
+      });
     });
 
     // Champ libre
@@ -189,6 +215,7 @@
           state.refus[etape.id] = true;
           state.answers[etape.id] = [];
           state.others[etape.id] = "";
+          state.vetos[etape.id] = [];
           save();
           nextStep();
         }
@@ -198,8 +225,33 @@
     $("#backBtn").style.visibility = state.step === 0 ? "hidden" : "visible";
   }
 
+  function getVetos(id) {
+    const v = state.vetos[id];
+    return Array.isArray(v) ? v : [];
+  }
+
+  // Clic sur le petit ✕ : bascule le veto sur CETTE réponse précise
+  function onVetoClick(etape, idx) {
+    if (isRefused(etape.id)) { delete state.refus[etape.id]; }
+    const vet = getVetos(etape.id);
+    const sel = getSel(etape.id);
+    const vpos = vet.indexOf(idx);
+    if (vpos === -1) {
+      vet.push(idx);
+      // une réponse vetotée ne peut pas être aussi choisie
+      const spos = sel.indexOf(idx);
+      if (spos !== -1) sel.splice(spos, 1);
+    } else {
+      vet.splice(vpos, 1);
+    }
+    state.vetos[etape.id] = vet;
+    state.answers[etape.id] = sel;
+    save();
+    refreshOptions(etape);
+  }
+
   function onOptionClick(etape, idx) {
-    // choisir une option annule un éventuel « non merci »
+    // choisir une option annule un éventuel « non merci » global
     if (isRefused(etape.id)) {
       delete state.refus[etape.id];
       const rb = $("#refusBtn");
@@ -208,12 +260,16 @@
     const current = getSel(etape.id);
 
     if (etape.multi) {
+      // sélectionner une réponse annule son veto éventuel
+      const vet = getVetos(etape.id);
+      const vpos = vet.indexOf(idx);
+      if (vpos !== -1) { vet.splice(vpos, 1); state.vetos[etape.id] = vet; }
       // bascule dans le tableau (l'ordre d'ajout = ordre de préférence)
       const pos = current.indexOf(idx);
       if (pos === -1) current.push(idx); else current.splice(pos, 1);
       state.answers[etape.id] = current;
       save();
-      updateOrderBadges(etape);
+      refreshOptions(etape);
     } else {
       // choix unique : on enregistre et on avance
       state.answers[etape.id] = [idx];
@@ -225,19 +281,20 @@
     }
   }
 
-  // Met à jour l'état visuel (sélection + numéro d'ordre) des options
-  function updateOrderBadges(etape) {
+  // Met à jour l'état visuel des options (sélection + rang + veto)
+  function refreshOptions(etape) {
     const sel = getSel(etape.id);
-    document.querySelectorAll("#questionCard .option").forEach((btn) => {
-      const i = parseInt(btn.dataset.index, 10);
+    const vet = getVetos(etape.id);
+    document.querySelectorAll("#questionCard .option").forEach((el) => {
+      const i = parseInt(el.dataset.index, 10);
       const pos = sel.indexOf(i);
-      const check = btn.querySelector(".option-check");
-      if (pos !== -1) {
-        btn.classList.add("is-selected");
-        if (check) check.textContent = etape.multi ? String(pos + 1) : "✓";
-      } else {
-        btn.classList.remove("is-selected");
-      }
+      const isVet = vet.indexOf(i) !== -1;
+      el.classList.toggle("is-selected", pos !== -1);
+      el.classList.toggle("is-vetoed", isVet);
+      const check = el.querySelector(".option-check");
+      if (check && pos !== -1) check.textContent = etape.multi ? String(pos + 1) : "✓";
+      const vb = el.querySelector(".option-veto");
+      if (vb) vb.classList.toggle("is-active", isVet);
     });
   }
 
@@ -266,14 +323,18 @@
 
   /* ----------------------- Résultat d'une étape ----------------------- */
   const REFUS_LABEL = "🙅 Non, pas cette fois";
-  // Renvoie { refus: bool, labels: [..] }
+  // Renvoie { refus, chosen: [..], vetoed: [..] }
   function stepResult(etape) {
-    if (isRefused(etape.id)) return { refus: true, labels: [REFUS_LABEL] };
-    const parts = getSel(etape.id).map((i) => etape.options[i]).filter(Boolean);
-    const labels = parts.map((o) => o.emoji + " " + o.label);
+    if (isRefused(etape.id)) return { refus: true, chosen: [REFUS_LABEL], vetoed: [] };
+    const chosen = getSel(etape.id)
+      .map((i) => etape.options[i]).filter(Boolean)
+      .map((o) => o.emoji + " " + o.label);
     const other = (state.others[etape.id] || "").trim();
-    if (other) labels.push("✍️ " + other);
-    return { refus: false, labels: labels };
+    if (other) chosen.push("✍️ " + other);
+    const vetoed = getVetos(etape.id)
+      .map((i) => etape.options[i]).filter(Boolean)
+      .map((o) => o.emoji + " " + o.label);
+    return { refus: false, chosen: chosen, vetoed: vetoed };
   }
 
   /* ----------------------- Écran récapitulatif ----------------------- */
@@ -285,16 +346,21 @@
 
     $("#recapList").innerHTML = ETAPES.map((etape, n) => {
       const res = stepResult(etape);
-      if (!res.labels.length) return "";
-      const chipClass = res.refus ? "recap-chip recap-chip--refus" : "recap-chip";
-      // Numérotation quand plusieurs choix (montre l'ordre de préférence)
-      const numbered = etape.multi && !res.refus && res.labels.length > 1;
-      const answersHtml = res.labels
-        .map((l, i) => {
+      if (!res.chosen.length && !res.vetoed.length) return "";
+      let answersHtml;
+      if (res.refus) {
+        answersHtml = `<span class="recap-chip recap-chip--refus">${escapeHtml(res.chosen[0])}</span>`;
+      } else {
+        const numbered = etape.multi && res.chosen.length > 1;
+        const chosenHtml = res.chosen.map((l, i) => {
           const pref = numbered ? `<span class="recap-rank">${i + 1}</span>` : "";
-          return `<span class="${chipClass}">${pref}${escapeHtml(l)}</span>`;
-        })
-        .join("");
+          return `<span class="recap-chip">${pref}${escapeHtml(l)}</span>`;
+        }).join("");
+        const vetoHtml = res.vetoed.map((l) =>
+          `<span class="recap-chip recap-chip--veto">⛔ ${escapeHtml(l)}</span>`
+        ).join("");
+        answersHtml = chosenHtml + vetoHtml;
+      }
       return `
         <li class="recap-item" style="animation-delay:${n * 0.06}s">
           <span class="recap-item-emoji">${etape.emoji}</span>
@@ -316,13 +382,17 @@
     txt += "----------------------------------------\n\n";
     ETAPES.forEach((etape) => {
       const res = stepResult(etape);
-      if (!res.labels.length) return;
-      const numbered = etape.multi && !res.refus && res.labels.length > 1;
+      if (!res.chosen.length && !res.vetoed.length) return;
       txt += etape.emoji + " " + etape.question + "\n";
-      res.labels.forEach((l, i) => {
-        const pref = numbered ? (i + 1) + ". " : "";
-        txt += "   → " + pref + l + "\n";
-      });
+      if (res.refus) {
+        txt += "   → " + res.chosen[0] + "\n";
+      } else {
+        const numbered = etape.multi && res.chosen.length > 1;
+        res.chosen.forEach((l, i) => {
+          txt += "   → " + (numbered ? (i + 1) + ". " : "") + l + "\n";
+        });
+        res.vetoed.forEach((l) => { txt += "   ⛔ (veto) " + l + "\n"; });
+      }
       txt += "\n";
     });
     txt += "Hâte d'y être avec toi ! ❤️";
@@ -354,6 +424,7 @@
       state.answers = {};
       state.others = {};
       state.refus = {};
+      state.vetos = {};
       save();
       showScreen("quiz");
       renderStep();
