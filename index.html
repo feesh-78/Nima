@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#e0567f" />
+  <title>Une surprise pour toi 💕</title>
+  <meta name="description" content="Une petite surprise rien que pour toi…" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>" />
+</head>
+<body>
+  <!-- Cœurs qui flottent en fond -->
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
+
+  <main class="app" id="app">
+
+    <!-- ===================== ÉCRAN D'ACCUEIL ===================== -->
+    <section class="screen screen--intro is-active" id="screen-intro">
+      <div class="card card--intro">
+        <div class="intro-emoji">💌</div>
+        <h1 class="intro-title" id="introTitle">Une surprise t'attend…</h1>
+        <p class="intro-sub" id="introSub"></p>
+
+        <label class="field">
+          <span class="field-label">Comment tu t'appelles, toi ? 🥰</span>
+          <input type="text" id="nameInput" class="field-input"
+                 placeholder="Ton prénom…" autocomplete="off" maxlength="30" />
+        </label>
+
+        <button class="btn btn--primary" id="startBtn">
+          C'est parti <span class="btn-arrow">→</span>
+        </button>
+        <p class="intro-note">Quelques questions, et je m'occupe du reste ✨</p>
+      </div>
+    </section>
+
+    <!-- ===================== ÉCRAN DES QUESTIONS ===================== -->
+    <section class="screen screen--quiz" id="screen-quiz">
+      <header class="quiz-header">
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text" id="progressText">Étape 1</div>
+      </header>
+
+      <div class="card card--question" id="questionCard">
+        <!-- Rempli dynamiquement par app.js -->
+      </div>
+
+      <div class="quiz-nav">
+        <button class="btn btn--ghost" id="backBtn">← Retour</button>
+      </div>
+    </section>
+
+    <!-- ===================== ÉCRAN RÉCAPITULATIF ===================== -->
+    <section class="screen screen--recap" id="screen-recap">
+      <div class="card card--recap">
+        <div class="recap-emoji">🎉</div>
+        <h2 class="recap-title" id="recapTitle">C'est noté, mon amour !</h2>
+        <p class="recap-sub">Voici tout ce que tu as choisi pour notre soirée :</p>
+
+        <ul class="recap-list" id="recapList"></ul>
+
+        <div class="recap-actions">
+          <button class="btn btn--primary" id="sendBtn">
+            💌 M'envoyer mes choix
+          </button>
+          <button class="btn btn--soft" id="copyBtn">📋 Copier le récap</button>
+          <button class="btn btn--ghost" id="restartBtn">↺ Recommencer</button>
+        </div>
+
+        <p class="recap-note" id="recapNote">
+          Astuce : le bouton « M'envoyer mes choix » ouvre ta messagerie
+          avec tout déjà pré-rempli. 💕
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/quiz-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
