@@ -8,7 +8,10 @@
 
    Chaque étape peut avoir :
      - multi: true      -> elle peut choisir PLUSIEURS réponses
+                           (l'ordre des clics = son ordre de préférence)
      - allowOther: true -> un champ libre pour qu'elle complète elle-même
+     - allowRefus: true -> un droit de veto « Non merci » sur la thématique
+     - refusLabel       -> le texte du bouton de refus (optionnel)
    ======================================================================= */
 
 const CONFIG = {
@@ -21,19 +24,36 @@ const CONFIG = {
   // Titre affiché sur l'écran d'accueil
   titre: "Une surprise t'attend…",
   sousTitre: "J'ai préparé quelque chose rien que pour nous deux. " +
-             "Réponds à quelques questions et laisse-moi organiser le reste. ✨",
+             "Réponds à quelques questions, dans l'ordre de tes envies, " +
+             "et laisse-moi organiser le reste. ✨",
 };
 
 /* -----------------------------------------------------------------------
    LES ÉTAPES DU QUIZ
+   L'ordre ci-dessous est l'ordre d'affichage :
+   1) la durée (elle donne le tempo)
+   2) puis les thématiques (une ou plusieurs selon l'envie / le temps)
+   3) enfin le jour
    ----------------------------------------------------------------------- */
 const ETAPES = [
+  {
+    id: "duree",
+    emoji: "⏱️",
+    question: "Combien de temps rien que pour nous ?",
+    hint: "Ça donne le tempo : plus c'est long, plus tu peux te faire plaisir sur les thématiques 😉",
+    options: [
+      { emoji: "⏳", label: "Un moment câlin",      desc: "1 à 2 heures" },
+      { emoji: "🌙", label: "Toute la soirée",      desc: "On prend notre temps" },
+      { emoji: "🌛", label: "Toute la nuit",        desc: "Jusqu'au bout…" },
+      { emoji: "🗓️", label: "Le week-end entier",   desc: "Rien que nous deux" },
+    ],
+  },
   {
     id: "theme",
     emoji: "🎉",
     question: "Quelle ambiance pour notre soirée ?",
-    hint: "Choisis ce qui te fait le plus envie.",
     multi: true,
+    allowRefus: true,
     options: [
       { emoji: "🕯️", label: "Cosy & cocooning",        desc: "Plaid, bougies et douceur" },
       { emoji: "🥂", label: "Chic & romantique",       desc: "On se met sur notre 31" },
@@ -61,12 +81,30 @@ const ETAPES = [
     ],
   },
   {
+    id: "musique",
+    emoji: "🎵",
+    question: "L'ambiance musicale ?",
+    hint: "Le style qui rythme notre moment.",
+    multi: true,
+    allowOther: true,
+    allowRefus: true,
+    refusLabel: "🙅 Pas de musique",
+    otherPlaceholder: "Un artiste, une playlist…",
+    options: [
+      { emoji: "💞", label: "Romantique",     desc: "Douceur et slows" },
+      { emoji: "🔥", label: "Agressif",       desc: "Ça envoie, ça réveille" },
+      { emoji: "🛏️", label: "Bedroom",        desc: "R&B feutré et sensuel" },
+      { emoji: "📻", label: "Années 90/2000", desc: "Nostalgie et gros tubes" },
+    ],
+  },
+  {
     id: "repas",
     emoji: "🍽️",
     question: "Qu'est-ce qu'on mange ?",
     hint: "Je cuisine ou je commande, à toi de choisir la saveur.",
     multi: true,
     allowOther: true,
+    allowRefus: true,
     otherPlaceholder: "Une autre envie ?",
     options: [
       { emoji: "🍝", label: "Italien",       desc: "Pâtes, pizza, dolce vita" },
@@ -80,6 +118,7 @@ const ETAPES = [
     emoji: "🥂",
     question: "On trinque avec quoi ?",
     multi: true,
+    allowRefus: true,
     options: [
       { emoji: "🍾", label: "Champagne",   desc: "Pour les grandes occasions" },
       { emoji: "🍷", label: "Vin rouge",   desc: "Chaleureux et velouté" },
@@ -92,6 +131,7 @@ const ETAPES = [
     emoji: "🍰",
     question: "Et pour finir en douceur ?",
     multi: true,
+    allowRefus: true,
     options: [
       { emoji: "🍫", label: "Fondant chocolat",   desc: "Coulant à souhait" },
       { emoji: "🍮", label: "Tiramisu",           desc: "Notre péché mignon" },
@@ -136,7 +176,7 @@ const ETAPES = [
   {
     id: "jour",
     emoji: "📅",
-    question: "C'est pour quand, notre soirée ?",
+    question: "C'est pour quand, notre surprise ?",
     hint: "Choisis le moment parfait.",
     options: [
       { emoji: "🌆", label: "Vendredi soir", desc: "Pour lancer le week-end" },

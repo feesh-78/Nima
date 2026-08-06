@@ -98,13 +98,16 @@
 
     let hint = etape.hint ? escapeHtml(etape.hint) : "";
     if (etape.multi) {
-      hint += (hint ? " " : "") + "<em>Plusieurs réponses possibles 💕</em>";
+      hint += (hint ? " " : "") +
+        "<em>Choisis-en une ou plusieurs, dans l'ordre de tes envies 💕</em>";
     }
     const hintHtml = hint ? `<p class="q-hint">${hint}</p>` : "";
 
     const optionsHtml = etape.options.map((opt, i) => {
-      const selected = sel.indexOf(i) !== -1 ? " is-selected" : "";
-      const mark = etape.multi ? "" : ""; // la coche ✓ suffit
+      const pos = sel.indexOf(i);
+      const selected = pos !== -1 ? " is-selected" : "";
+      // Pour un choix multiple, on affiche le rang (1, 2, 3…) au lieu d'une coche
+      const badge = (etape.multi && pos !== -1) ? String(pos + 1) : "✓";
       return `
         <button class="option${selected}" data-index="${i}">
           <span class="option-emoji">${opt.emoji}</span>
@@ -112,7 +115,7 @@
             <span class="option-label">${escapeHtml(opt.label)}</span>
             ${opt.desc ? `<span class="option-desc">${escapeHtml(opt.desc)}</span>` : ""}
           </span>
-          <span class="option-check">✓</span>
+          <span class="option-check">${badge}</span>
         </button>`;
     }).join("");
 
@@ -205,14 +208,12 @@
     const current = getSel(etape.id);
 
     if (etape.multi) {
-      // bascule dans le tableau
+      // bascule dans le tableau (l'ordre d'ajout = ordre de préférence)
       const pos = current.indexOf(idx);
       if (pos === -1) current.push(idx); else current.splice(pos, 1);
       state.answers[etape.id] = current;
       save();
-      // met à jour l'affichage de la coche sans re-render complet
-      const btn = $(`#questionCard .option[data-index="${idx}"]`);
-      if (btn) btn.classList.toggle("is-selected");
+      updateOrderBadges(etape);
     } else {
       // choix unique : on enregistre et on avance
       state.answers[etape.id] = [idx];
@@ -222,6 +223,22 @@
       if (btn) btn.classList.add("is-selected");
       setTimeout(nextStep, 320);
     }
+  }
+
+  // Met à jour l'état visuel (sélection + numéro d'ordre) des options
+  function updateOrderBadges(etape) {
+    const sel = getSel(etape.id);
+    document.querySelectorAll("#questionCard .option").forEach((btn) => {
+      const i = parseInt(btn.dataset.index, 10);
+      const pos = sel.indexOf(i);
+      const check = btn.querySelector(".option-check");
+      if (pos !== -1) {
+        btn.classList.add("is-selected");
+        if (check) check.textContent = etape.multi ? String(pos + 1) : "✓";
+      } else {
+        btn.classList.remove("is-selected");
+      }
+    });
   }
 
   function nextStep() {
@@ -270,8 +287,13 @@
       const res = stepResult(etape);
       if (!res.labels.length) return "";
       const chipClass = res.refus ? "recap-chip recap-chip--refus" : "recap-chip";
+      // Numérotation quand plusieurs choix (montre l'ordre de préférence)
+      const numbered = etape.multi && !res.refus && res.labels.length > 1;
       const answersHtml = res.labels
-        .map((l) => `<span class="${chipClass}">${escapeHtml(l)}</span>`)
+        .map((l, i) => {
+          const pref = numbered ? `<span class="recap-rank">${i + 1}</span>` : "";
+          return `<span class="${chipClass}">${pref}${escapeHtml(l)}</span>`;
+        })
         .join("");
       return `
         <li class="recap-item" style="animation-delay:${n * 0.06}s">
@@ -295,8 +317,12 @@
     ETAPES.forEach((etape) => {
       const res = stepResult(etape);
       if (!res.labels.length) return;
+      const numbered = etape.multi && !res.refus && res.labels.length > 1;
       txt += etape.emoji + " " + etape.question + "\n";
-      res.labels.forEach((l) => { txt += "   → " + l + "\n"; });
+      res.labels.forEach((l, i) => {
+        const pref = numbered ? (i + 1) + ". " : "";
+        txt += "   → " + pref + l + "\n";
+      });
       txt += "\n";
     });
     txt += "Hâte d'y être avec toi ! ❤️";
