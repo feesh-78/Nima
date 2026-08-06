@@ -26,6 +26,32 @@ const CONFIG = {
   sousTitre: "J'ai préparé quelque chose rien que pour nous deux. " +
              "Réponds à quelques questions, dans l'ordre de tes envies, " +
              "et laisse-moi organiser le reste. ✨",
+
+  /* -------------------------------------------------------------------
+     💞 AVATARS DU COUPLE (mini "manga" mignons)
+     - Laisse "img" vide -> une mascotte dessinée (SVG) est affichée.
+     - Dès que tu as de vrais portraits manga : mets le chemin de
+       l'image (ex: "assets/elle.png") dans "img" et elle remplacera
+       la mascotte partout. Idéal : image carrée, fond transparent.
+     ------------------------------------------------------------------- */
+  avatars: {
+    elle: { img: "", skin: "#8d5a3c", hair: "#6f3b2e", style: "curly", blush: "#e0567f" },
+    lui:  { img: "", skin: "#c9895b", hair: "#241c18", style: "short", blush: "#e0567f" },
+  },
+
+  /* 💕 Petits messages mignons affichés quand elle valide une étape.
+     (Tu peux en ajouter/retirer librement.) */
+  messagesMignons: [
+    "J'adore ce choix 🥰",
+    "Tu me connais si bien 💕",
+    "Excellent goût, comme toujours 😘",
+    "Hâte d'y être avec toi 🔥",
+    "Tu vas voir, ce sera parfait ✨",
+    "Mon cœur fait boum 💓",
+    "C'est noté, rien que pour toi 💌",
+    "On va passer un moment magique 🥂",
+    "Je craque… 😍",
+  ],
 };
 
 /* -----------------------------------------------------------------------
@@ -37,6 +63,7 @@ const CONFIG = {
    ----------------------------------------------------------------------- */
 const ETAPES = [
   {
+    sweet: "Rien que du temps pour nous… j'aime 🕰️💕",
     id: "duree",
     emoji: "⏱️",
     question: "Combien de temps rien que pour nous ?",
@@ -146,6 +173,7 @@ const ETAPES = [
     ],
   },
   {
+    sweet: "Mmm… cette idée me plaît 😏",
     id: "coquin",
     emoji: "😏",
     question: "La touche coquine de la soirée…",
@@ -166,6 +194,7 @@ const ETAPES = [
     ],
   },
   {
+    sweet: "Gourmande, et j'adore ça 😋",
     id: "gourmandise",
     emoji: "🍯",
     question: "On t'étale quoi sur la peau ? 😏",
@@ -181,6 +210,7 @@ const ETAPES = [
     ],
   },
   {
+    sweet: "Ce moment, je le note en grand ❤️",
     id: "jour",
     emoji: "📅",
     question: "C'est pour quand, notre surprise ?",
