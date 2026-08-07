@@ -1,15 +1,15 @@
 /* =======================================================================
-   CONFIGURATION — SITE 2 (Partie 2) 💕🔥
+   CONFIGURATION, SITE 2 (Partie 2) 💕🔥
    Les envies : tenues, films par genre, repas par moment, câlin, jouets…
    puis la révélation (page reveal.html).
    ======================================================================= */
 
 const CONFIG = {
   emailDestinataire: "philippe.bussac@jalyastudio.com",
-  sujetEmail: "💕 Mes choix (Partie 2) — nos envies",
+  sujetEmail: "💕 Mes choix (Partie 2), nos envies",
 
   titre: "La partie 2 t'attend… 🔥",
-  sousTitre: "Encore quelques envies rien qu'à nous — classe-les dans l'ordre que tu préfères. " +
+  sousTitre: "Encore quelques envies rien qu'à nous, classe-les dans l'ordre que tu préfères. " +
              "Et à la fin… une surprise. ✨",
 
   // Clé de sauvegarde propre au site 2 (ne se mélange pas avec le site 1)
@@ -55,7 +55,7 @@ const ETAPES = [
     sweet: "Bon programme en vue 🍿",
     id: "film_gossip",
     emoji: "💅",
-    question: "Gossip — on regarde quoi ?",
+    question: "Gossip, on regarde quoi ?",
     hint: "Classe tes préférés, veto sur le reste, ou ajoute une idée.",
     multi: true,
     allowOther: true,
@@ -72,7 +72,7 @@ const ETAPES = [
   {
     id: "film_humour",
     emoji: "😂",
-    question: "Humour — on rit avec quoi ?",
+    question: "Humour, on rit avec quoi ?",
     hint: "Classe tes préférés, veto sur le reste, ou ajoute une idée.",
     multi: true,
     allowOther: true,
@@ -89,7 +89,7 @@ const ETAPES = [
   {
     id: "film_afro",
     emoji: "🌍",
-    question: "Afro romantique — on choisit quoi ?",
+    question: "Afro romantique, on choisit quoi ?",
     hint: "Classe tes préférés, veto sur le reste, ou ajoute une idée.",
     multi: true,
     allowOther: true,
@@ -105,7 +105,7 @@ const ETAPES = [
   {
     id: "film_action",
     emoji: "💥",
-    question: "Action — on part sur quoi ?",
+    question: "Action, on part sur quoi ?",
     hint: "Classe tes préférés, veto sur le reste, ou ajoute une idée.",
     multi: true,
     allowOther: true,
@@ -121,7 +121,7 @@ const ETAPES = [
     sweet: "Coquine… j'aime beaucoup 😏🔥",
     id: "film_hot",
     emoji: "🔞",
-    question: "Pour pimenter — on regarde quoi ? 🔞",
+    question: "Pour pimenter, on regarde quoi ? 🔞",
     hint: "Rien d'obligé. Classe, veto, ou propose. 😉",
     multi: true,
     allowOther: true,
@@ -151,41 +151,37 @@ const ETAPES = [
     options: [
       { emoji: "🥙", label: "Mes pitas sauce cacahuète", desc: "Ma petite spécialité 😋" },
       { emoji: "🌯", label: "Pitas, autre sauce",        desc: "Dis-moi laquelle tu préfères" },
-      { emoji: "🍤", label: "Amuse-gueules / finger food", desc: "Petites entrées préparées — surprise de monsieur" },
+      { emoji: "🍤", label: "Amuse-gueules / finger food", desc: "Petites entrées préparées, surprise de monsieur" },
     ],
   },
   {
     id: "soir",
     emoji: "🍲",
-    question: "Le soir : plat africain de l'Ouest",
-    hint: "Classe tes envies, veto, ou laisse-toi choisir le plat.",
+    question: "Le soir, on mange quoi ?",
+    hint: "À toi de choisir : note le plat qui te fait envie.",
     multi: true,
     allowOther: true,
     allowRefus: true,
-    otherPlaceholder: "Un plat qui te fait envie…",
+    otherPlaceholder: "Le plat dont tu as envie…",
     options: [
-      { emoji: "🥜", label: "Mafé",             desc: "Sauce arachide, fondant" },
-      { emoji: "🐟", label: "Thieboudienne",    desc: "Riz au poisson, le classique" },
-      { emoji: "🍗", label: "Poulet Yassa",     desc: "Citron & oignons confits" },
-      { emoji: "🍚", label: "Attiéké-poisson",  desc: "Frais et parfumé" },
-      { emoji: "🙋", label: "Tu choisis le plat", desc: "Je te fais confiance — toi tu t'y connais 😅" },
+      { emoji: "🙋", label: "Tu choisis le plat", desc: "Je te fais confiance, dis-moi ce qui te fait envie" },
+      { emoji: "🍲", label: "Plat africain de l'Ouest", desc: "Tu me dis lequel 😉" },
     ],
   },
   {
     sweet: "Le réveil parfait 🥞",
     id: "brunch",
     emoji: "🥞",
-    question: "Au réveil / à grignoter ?",
-    hint: "Classe tes envies, veto sur le reste, ou ajoute.",
+    question: "Au réveil, on grignote quoi ?",
+    hint: "Le brunch au lit est déjà prévu 😌 Choisis les gourmandises.",
     multi: true,
     allowOther: true,
     allowRefus: true,
     otherPlaceholder: "Une autre gourmandise…",
     options: [
-      { emoji: "🛏️", label: "Brunch au lit", desc: "On ne se lève pas 😌" },
-      { emoji: "🥞", label: "Pancakes",      desc: "Moelleux, sirop et gourmandise" },
-      { emoji: "🍇", label: "Raisins",       desc: "Frais, à picorer à deux" },
-      { emoji: "🍤", label: "Finger food",   desc: "Petites bouchées à partager" },
+      { emoji: "🥞", label: "Pancakes",    desc: "Moelleux, sirop et gourmandise" },
+      { emoji: "🍇", label: "Raisins",     desc: "Frais, à picorer à deux" },
+      { emoji: "🍤", label: "Finger food", desc: "Petites bouchées à partager" },
     ],
   },
 

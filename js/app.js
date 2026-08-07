@@ -1,5 +1,5 @@
 /* =======================================================================
-   Site surprise 💕 — Logique de l'application
+   Site surprise 💕, Logique de l'application
    Data-driven : tout le contenu vient de quiz-data.js (CONFIG + ETAPES).
    Prend en charge :
      - choix unique (on avance automatiquement)
@@ -414,7 +414,7 @@
   /* ----------------------- Récap en texte ----------------------- */
   function buildSummaryText() {
     const prenom = state.name || "";
-    let txt = "💕 Mes choix pour notre soirée surprise" + (prenom ? " — " + prenom : "") + "\n";
+    let txt = "💕 Mes choix pour notre soirée surprise" + (prenom ? ", " + prenom : "") + "\n";
     txt += "----------------------------------------\n\n";
     ETAPES.forEach((etape) => {
       const res = stepResult(etape);

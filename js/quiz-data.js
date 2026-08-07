@@ -1,5 +1,5 @@
 /* =======================================================================
-   CONFIGURATION — SITE 1 (Partie 1) 💕
+   CONFIGURATION, SITE 1 (Partie 1) 💕
    L'organisation : durée, lieu, ambiance, déco, musique, repas (format /
    qui cuisine / dessert), le jour.
    (Les envies détaillées + l'intime sont sur le SITE 2 : partie2.html)
@@ -139,7 +139,7 @@ const ETAPES = [
     id: "dessert",
     emoji: "🍰",
     question: "Et pour finir en douceur ?",
-    hint: "Je te le prépare maison 👩‍🍳💕 — choisis et note le dessert dont tu rêves.",
+    hint: "Je te le prépare maison 👩‍🍳💕, choisis et note le dessert dont tu rêves.",
     multi: true,
     allowOther: true,
     allowRefus: true,

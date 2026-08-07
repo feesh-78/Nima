@@ -1,4 +1,4 @@
-# 💕 Site surprise — Quiz de la soirée romantique
+# 💕 Site surprise, Quiz de la soirée romantique
 
 Un petit site interactif tout mignon : ta moitié répond à quelques questions
 (ambiance, film, repas, dessert, la touche coquine, le jour…) et **ses choix
@@ -28,7 +28,7 @@ js/app.js           → la logique du quiz
 
 ## ✏️ Comment personnaliser
 
-Ouvre **`js/quiz-data.js`** — c'est le seul fichier à toucher pour l'essentiel :
+Ouvre **`js/quiz-data.js`**, c'est le seul fichier à toucher pour l'essentiel :
 
 - `CONFIG.emailDestinataire` : l'adresse où recevoir les choix
 - `CONFIG.titre` / `CONFIG.sousTitre` : le message d'accueil
@@ -53,7 +53,7 @@ Exemple pour ajouter une étape :
 ## 🚀 Tester en local
 
 Ouvre simplement `index.html` dans ton navigateur (double-clic).
-Aucune installation nécessaire — c'est du HTML/CSS/JS pur.
+Aucune installation nécessaire, c'est du HTML/CSS/JS pur.
 
 Pour un vrai serveur local :
 
@@ -73,7 +73,7 @@ Le plus simple : **GitHub Pages**.
    `https://feesh-78.github.io/nima/`
 
 Tu peux aussi le déposer sur **Netlify** ou **Vercel** (glisser-déposer du
-dossier) — aucun réglage nécessaire, c'est un site statique.
+dossier), aucun réglage nécessaire, c'est un site statique.
 
 ---
 

@@ -1,9 +1,9 @@
-# 🎥 Vidéo de fond — page « Partie 2 » (escapade au bord du lac)
+# 🎥 Vidéo de fond, page « Partie 2 » (escapade au bord du lac)
 
 Déposez ici votre **vidéo libre de droit** pour qu'elle s'affiche en fond plein écran :
 
-- `lac.mp4` — la vidéo (obligatoire)
-- `lac.jpg` — une image « poster » affichée le temps que la vidéo charge (optionnel, recommandé)
+- `lac.mp4`, la vidéo (obligatoire)
+- `lac.jpg`, une image « poster » affichée le temps que la vidéo charge (optionnel, recommandé)
 
 La page `partie2.html` les utilise automatiquement. Tant que `lac.mp4` n'est pas
 présent, un **magnifique fond animé de secours** (lac au crépuscule + reflets) s'affiche.
@@ -26,4 +26,4 @@ présent, un **magnifique fond animé de secours** (lac au crépuscule + reflets
 2. Placez-le dans ce dossier `assets/`
 3. Poussez sur GitHub (ou envoyez-le moi et je m'en occupe)
 
-C'est tout — la vidéo apparaîtra en fond de `partie2.html`. ✨
+C'est tout, la vidéo apparaîtra en fond de `partie2.html`. ✨
