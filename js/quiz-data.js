@@ -143,7 +143,7 @@ const ETAPES = [
     multi: true,
     allowOther: true,
     allowRefus: true,
-    otherPlaceholder: "Autre chose qui te fait envie ? Note-la…",
+    otherPlaceholder: "Autre : note ce qui te fait envie…",
     options: [
       { emoji: "🛒", label: "Acheté",             desc: "On le prend pendant les courses" },
       { emoji: "👩‍🍳", label: "Fait maison",       desc: "Je te le prépare" },

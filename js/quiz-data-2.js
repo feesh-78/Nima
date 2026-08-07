@@ -156,12 +156,12 @@ const ETAPES = [
   {
     id: "soir",
     emoji: "🍲",
-    question: "Le soir, on part sur quoi ?",
-    hint: "Deux ambiances possibles. Classe, ajoute un plat précis, ou mets ton veto.",
+    question: "Le soir, on mange quoi ?",
+    hint: "On ne sera pas à la maison le soir : à toi de choisir ce qui te fait envie.",
     multi: true,
     allowOther: true,
     allowRefus: true,
-    otherPlaceholder: "Un plat précis qui te fait envie…",
+    otherPlaceholder: "Autre : ton envie, le resto qui te tente…",
     options: [
       { emoji: "🍲", label: "Ouest-africain", desc: "Yassa, mafé, jollof…" },
       { emoji: "🥢", label: "Asiatique",      desc: "Wok, nouilles, sushis, curry…" },
@@ -176,7 +176,7 @@ const ETAPES = [
     multi: true,
     allowOther: true,
     allowRefus: true,
-    otherPlaceholder: "Une autre gourmandise…",
+    otherPlaceholder: "Autre : une gourmandise à noter…",
     options: [
       { emoji: "🥞", label: "Pancakes",    desc: "Moelleux, sirop et gourmandise" },
       { emoji: "🍇", label: "Raisins",     desc: "Frais, à picorer à deux" },
