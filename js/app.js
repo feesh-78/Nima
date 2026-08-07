@@ -421,13 +421,52 @@
   }
 
   /* ----------------------- Actions du récap ----------------------- */
+  function mailtoFallback() {
+    const sujet = encodeURIComponent(CONFIG.sujetEmail);
+    const corps = encodeURIComponent(buildSummaryText());
+    window.location.href =
+      "mailto:" + CONFIG.emailDestinataire + "?subject=" + sujet + "&body=" + corps;
+  }
+
+  // Envoi des choix : d'abord via FormSubmit (réception automatique par e-mail),
+  // avec repli sur la messagerie du téléphone si le service échoue.
+  async function sendChoices() {
+    const btn = $("#sendBtn");
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.textContent = "Envoi… 💌";
+    const payload = {
+      _subject: CONFIG.sujetEmail,
+      _template: "box",
+      _captcha: "false",
+      Choix: buildSummaryText(),
+    };
+    try {
+      const res = await fetch(
+        "https://formsubmit.co/ajax/" + encodeURIComponent(CONFIG.emailDestinataire),
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+      const data = await res.json().catch(() => ({}));
+      const ok = res.ok && (data.success === "true" || data.success === true || data.message);
+      if (!ok) throw new Error("formsubmit");
+      btn.textContent = "Envoyé 💕";
+      toast("C'est envoyé, merci mon amour 💕");
+      setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 2500);
+    } catch (e) {
+      // Repli : on ouvre la messagerie pré-remplie
+      toast("On passe par ta messagerie 💌");
+      mailtoFallback();
+      btn.innerHTML = original;
+      btn.disabled = false;
+    }
+  }
+
   function initRecapActions() {
-    $("#sendBtn").addEventListener("click", () => {
-      const sujet = encodeURIComponent(CONFIG.sujetEmail);
-      const corps = encodeURIComponent(buildSummaryText());
-      window.location.href =
-        "mailto:" + CONFIG.emailDestinataire + "?subject=" + sujet + "&body=" + corps;
-    });
+    $("#sendBtn").addEventListener("click", sendChoices);
 
     $("#copyBtn").addEventListener("click", async () => {
       const text = buildSummaryText();
