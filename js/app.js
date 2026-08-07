@@ -11,7 +11,10 @@
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "surprise-choix-v3";
+  // Clé propre à chaque site (définie dans le fichier de données) pour ne pas
+  // mélanger les réponses du site 1 et du site 2.
+  const STORAGE_KEY = (typeof CONFIG !== "undefined" && CONFIG.storageKey)
+    ? CONFIG.storageKey : "surprise-choix-v3";
 
   const state = {
     name: "",
@@ -478,6 +481,17 @@
   }
 
   function initRecapActions() {
+    // Bouton final (site 2) : mène à la page de révélation
+    if (CONFIG.finalLink) {
+      const actions = $(".recap-actions");
+      const fb = document.createElement("button");
+      fb.className = "btn btn--primary";
+      fb.id = "finalBtn";
+      fb.textContent = CONFIG.finalLabel || "✨ Découvrir la suite";
+      fb.addEventListener("click", () => { window.location.href = CONFIG.finalLink; });
+      actions.insertBefore(fb, actions.firstChild);
+    }
+
     $("#sendBtn").addEventListener("click", sendChoices);
 
     $("#copyBtn").addEventListener("click", async () => {
