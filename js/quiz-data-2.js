@@ -178,9 +178,10 @@ const ETAPES = [
     allowRefus: true,
     otherPlaceholder: "Autre : une gourmandise à noter…",
     options: [
-      { emoji: "🥞", label: "Pancakes",    desc: "Moelleux, sirop et gourmandise" },
-      { emoji: "🍇", label: "Raisins",     desc: "Frais, à picorer à deux" },
-      { emoji: "🍤", label: "Finger food", desc: "Petites bouchées à partager" },
+      { emoji: "🥞", label: "Pancakes",   desc: "Moelleux, sirop et gourmandise" },
+      { emoji: "🍇", label: "Raisins",    desc: "À picorer à deux" },
+      { emoji: "🫐", label: "Myrtilles",  desc: "Fraîches et sucrées" },
+      { emoji: "🙋", label: "Je te laisse choisir", desc: "Par logistique, à toi de voir" },
     ],
   },
   {
