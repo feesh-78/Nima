@@ -49,7 +49,7 @@ const ETAPES = [
     id: "lieu",
     emoji: "📍",
     question: "Où on s'évade ?",
-    hint: "Clique sur « Voir » pour découvrir chaque logement, puis classe tes préférés. (Séjour à priori sur 2 nuits.)",
+    hint: "Clique sur « Voir » pour découvrir chaque logement, puis classe tes préférés. (Une nuit en forêt, puis une nuit et une journée au lac.)",
     multi: true,
     allowRefus: true,
     otherPlaceholder: "Une autre idée de lieu ?",

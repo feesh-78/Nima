@@ -12,7 +12,7 @@
   var reduce = window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  var W = 0, H = 0, dpr = 1, horizon = 0, glints = [];
+  var W = 0, H = 0, dpr = 1, horizon = 0, glints = [], trees = [];
 
   function rand() { return Math.random(); }
 
@@ -36,6 +36,41 @@
         drift: 6 + rand() * 16,
       });
     }
+    // Ligne de sapins sur la rive (esprit forêt)
+    trees = [];
+    var tn = Math.max(14, Math.round(W / 20));
+    for (var j = 0; j < tn; j++) {
+      trees.push({
+        x: rand() * (W + 40) - 20,
+        h: 16 + rand() * 40,
+        w: 10 + rand() * 16,
+      });
+    }
+  }
+
+  function pine(x, base, h, w) {
+    ctx.beginPath();
+    for (var k = 0; k < 3; k++) {
+      var ly = base - (h * 0.32 * k);
+      var lh = h * 0.55;
+      var lw = w * (1 - k * 0.2);
+      ctx.moveTo(x - lw / 2, ly);
+      ctx.lineTo(x + lw / 2, ly);
+      ctx.lineTo(x, ly - lh);
+      ctx.closePath();
+    }
+    ctx.fill();
+  }
+
+  function drawTrees() {
+    // léger liseré de rive
+    ctx.fillStyle = "rgba(3, 12, 20, 0.55)";
+    ctx.fillRect(0, horizon - 2, W, 4);
+    // sapins en silhouette
+    ctx.fillStyle = "#03101a";
+    for (var i = 0; i < trees.length; i++) {
+      pine(trees[i].x, horizon + 1, trees[i].h, trees[i].w);
+    }
   }
 
   function draw(t) {
@@ -55,6 +90,9 @@
     glow.addColorStop(1, "rgba(230, 192, 122, 0)");
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, W, horizon + 60);
+
+    // Sapins sur la rive (silhouettes contre la lueur)
+    drawTrees();
 
     // Eau
     var lake = ctx.createLinearGradient(0, horizon, 0, H);
