@@ -138,13 +138,15 @@ const ETAPES = [
   {
     id: "dessert",
     emoji: "🍰",
-    question: "Et pour finir en douceur ?",
-    hint: "Je te le prépare maison 👩‍🍳💕, choisis et note le dessert dont tu rêves.",
+    question: "Et pour le dessert ?",
+    hint: "On l'achète (pendant les courses) ou je te le prépare maison ? Choisis, et dis-moi si tu veux autre chose.",
     multi: true,
     allowOther: true,
     allowRefus: true,
-    otherPlaceholder: "Note le dessert dont tu rêves…",
+    otherPlaceholder: "Autre chose qui te fait envie ? Note-la…",
     options: [
+      { emoji: "🛒", label: "Acheté",             desc: "On le prend pendant les courses" },
+      { emoji: "👩‍🍳", label: "Fait maison",       desc: "Je te le prépare" },
       { emoji: "🍫", label: "Fondant chocolat",   desc: "Coulant à souhait" },
       { emoji: "🍮", label: "Tiramisu",           desc: "Notre péché mignon" },
       { emoji: "🍨", label: "Glaces",             desc: "À partager à la petite cuillère" },
