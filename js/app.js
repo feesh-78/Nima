@@ -138,6 +138,9 @@
             <button class="option-veto${isVet ? " is-active" : ""}" data-veto="${i}"
                     type="button" aria-label="Poser un veto sur cette option"
                     title="Non merci pour celle-ci">✕</button>` : "";
+      const linkBtn = opt.link ? `
+            <a class="option-link" href="${escapeHtml(opt.link)}" target="_blank"
+               rel="noopener noreferrer" title="Voir l'annonce">👀 Voir</a>` : "";
       return `
         <div class="option${cls}" data-index="${i}" role="button" tabindex="0">
           <span class="option-emoji">${opt.emoji}</span>
@@ -146,6 +149,7 @@
             ${opt.desc ? `<span class="option-desc">${escapeHtml(opt.desc)}</span>` : ""}
           </span>
           <span class="option-actions">
+            ${linkBtn}
             <span class="option-check">${badge}</span>
             ${vetoBtn}
           </span>
@@ -197,6 +201,11 @@
         e.stopPropagation();
         onVetoClick(etape, parseInt(vb.dataset.veto, 10));
       });
+    });
+
+    // Clic sur le lien « Voir » (ouvre l'annonce sans sélectionner l'option)
+    $("#questionCard").querySelectorAll(".option-link").forEach((lk) => {
+      lk.addEventListener("click", (e) => e.stopPropagation());
     });
 
     // Champ libre

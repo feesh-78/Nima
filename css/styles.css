@@ -294,6 +294,26 @@ body {
   color: #fff;
 }
 
+/* Lien « Voir » sur une option (ex. annonce Airbnb) */
+.option-link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 11px;
+  border-radius: 99px;
+  background: #ffe4ec;
+  color: var(--pink-3);
+  font-size: 12.5px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.option-link:hover { background: #ffd0dd; }
+.option-link:active { transform: scale(0.94); }
+
 /* Réponse vetotée : grisée et barrée */
 .option.is-vetoed {
   opacity: 0.62;
