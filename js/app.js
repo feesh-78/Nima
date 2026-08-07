@@ -93,17 +93,9 @@
     $("#introTitle").textContent = CONFIG.titre;
     $("#introSub").textContent = CONFIG.sousTitre;
 
-    const nameInput = $("#nameInput");
-    nameInput.value = state.name;
-
     $("#startBtn").addEventListener("click", () => {
-      state.name = nameInput.value.trim();
-      save();
       if (isFinished()) { showRecap(); }
       else { showScreen("quiz"); renderStep(); }
-    });
-    nameInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") $("#startBtn").click();
     });
   }
 
@@ -370,7 +362,7 @@
   function showRecap() {
     $("#progressBar").style.width = "100%";
 
-    const prenom = state.name ? state.name : "toi";
+    const prenom = state.name ? state.name : "mon amour";
     $("#recapTitle").textContent = "C'est noté, " + prenom + " ! 💕";
 
     $("#recapList").innerHTML = ETAPES.map((etape, n) => {
