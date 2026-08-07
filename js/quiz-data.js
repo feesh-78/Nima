@@ -57,10 +57,10 @@ const ETAPES = [
     question: "Combien de temps rien que pour nous ?",
     hint: "Ça donne le tempo : plus c'est long, plus tu peux te faire plaisir sur les thématiques 😉",
     options: [
-      { emoji: "⏳", label: "Un moment câlin",      desc: "1 à 2 heures" },
-      { emoji: "🌙", label: "Toute la soirée",      desc: "On prend notre temps" },
-      { emoji: "🌛", label: "Toute la nuit",        desc: "Jusqu'au bout…" },
-      { emoji: "🗓️", label: "Le week-end entier",   desc: "Rien que nous deux" },
+      { emoji: "🌙", label: "Toute la soirée",           desc: "On prend notre temps" },
+      { emoji: "🌇", label: "Fin d'après-midi → soirée", desc: "On enchaîne en douceur" },
+      { emoji: "🕛", label: "Midi au soir",              desc: "Une longue parenthèse" },
+      { emoji: "🌞", label: "Toute la journée",          desc: "Rien que nous deux, sans compter" },
     ],
   },
   {
