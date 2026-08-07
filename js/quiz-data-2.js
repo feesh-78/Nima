@@ -183,4 +183,16 @@ const ETAPES = [
       { emoji: "🍤", label: "Finger food", desc: "Petites bouchées à partager" },
     ],
   },
+  {
+    sweet: "Merci mon amour 💕",
+    id: "oubli",
+    emoji: "🤔",
+    question: "Ai-je oublié quelque chose ?",
+    hint: "Ajoute tout ce qui te ferait plaisir. Sinon, dis-moi que c'est parfait 💕",
+    allowOther: true,
+    allowRefus: true,
+    refusLabel: "✅ Non, c'est parfait comme ça",
+    otherPlaceholder: "Une dernière envie, une idée, un petit mot…",
+    options: [],
+  },
 ];
