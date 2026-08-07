@@ -185,6 +185,18 @@ const ETAPES = [
     ],
   },
   {
+    sweet: "Parfait, je m'occupe des courses 🛒",
+    id: "ingredients",
+    emoji: "🧺",
+    question: "Ingrédients & ustensiles ?",
+    hint: "Pour chaque repas, peux-tu me lister les ingrédients et les ustensiles nécessaires ? Ce que j'ai déjà, je viens avec 😉",
+    allowOther: true,
+    allowRefus: true,
+    refusLabel: "✅ Je te les enverrai autrement",
+    otherPlaceholder: "Liste ici : ingrédients + ustensiles (par repas)…",
+    options: [],
+  },
+  {
     sweet: "Merci mon amour 💕",
     id: "oubli",
     emoji: "🤔",
