@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#06121a" />
+  <title>Notre escapade au bord du lac 💕</title>
+  <meta name="description" content="Deux nuits au bord du lac, rien que nous." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>" />
+  <style>
+    :root {
+      --night:  #06121a;
+      --lake:   #0e2a38;
+      --cream:  #f6f1e7;
+      --mist:   #d7e7ea;
+      --gold:   #e6c07a;
+      --rose:   #f2a6b8;
+      --serif:  Georgia, "Iowan Old Style", "Times New Roman", serif;
+      --sans:   system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: var(--sans);
+      color: var(--cream);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      /* Fond de secours (si la vidéo n'est pas encore là) : lac au crépuscule
+         + lueur chaude d'une baie vitrée montant du bas */
+      background:
+        radial-gradient(90% 62% at 50% 120%, rgba(230, 192, 122, 0.30), transparent 60%),
+        radial-gradient(140% 110% at 50% 6%, #16394b 0%, #0b1f2a 52%, var(--night) 100%);
+    }
+
+    /* Reflets qui glissent sur l'eau (fond de secours uniquement) */
+    body::after {
+      content: "";
+      position: fixed;
+      left: -20%;
+      right: -20%;
+      bottom: 0;
+      height: 46vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(100deg,
+        transparent 20%,
+        rgba(230, 192, 122, 0.10) 42%,
+        rgba(215, 231, 234, 0.14) 50%,
+        rgba(230, 192, 122, 0.10) 58%,
+        transparent 80%);
+      filter: blur(6px);
+      animation: shimmer 9s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { transform: translateX(-4%); opacity: 0.7; }
+      50%      { transform: translateX(4%);  opacity: 1; }
+    }
+
+    /* Vidéo de fond plein écran (recouvre le fond de secours quand elle existe) */
+    .bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* Voile dégradé pour la lisibilité du texte (poids en bas) */
+    .scrim {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg,
+          rgba(6, 18, 26, 0.30) 0%,
+          rgba(6, 18, 26, 0.00) 26%,
+          rgba(6, 18, 26, 0.55) 68%,
+          rgba(6, 18, 26, 0.92) 100%),
+        linear-gradient(90deg,
+          rgba(6, 18, 26, 0.55) 0%,
+          rgba(6, 18, 26, 0.00) 55%);
+    }
+
+    /* Scène : contenu ancré en bas à gauche, façon affiche */
+    .stage {
+      position: relative;
+      z-index: 3;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 20px;
+      max-width: 860px;
+      padding: clamp(26px, 6vw, 76px);
+    }
+    .stage > * {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: reveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .stage > *:nth-child(1) { animation-delay: 0.25s; }
+    .stage > *:nth-child(2) { animation-delay: 0.55s; }
+    .stage > *:nth-child(3) { animation-delay: 0.95s; }
+    .stage > *:nth-child(4) { animation-delay: 1.35s; }
+    .stage > *:nth-child(5) { animation-delay: 1.7s; }
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .eyebrow {
+      font-size: clamp(12px, 1.6vw, 14px);
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .eyebrow::before {
+      content: "";
+      width: clamp(28px, 6vw, 54px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(38px, 8.5vw, 82px);
+      line-height: 1.03;
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+      color: var(--cream);
+      text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
+    }
+    .title .em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .lede {
+      font-size: clamp(16px, 2.3vw, 20px);
+      line-height: 1.6;
+      color: var(--mist);
+      max-width: 48ch;
+      text-shadow: 0 1px 16px rgba(0, 0, 0, 0.5);
+    }
+    .lede .heart { color: var(--rose); }
+
+    .chips {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chips li {
+      font-size: clamp(13px, 1.8vw, 15px);
+      font-weight: 600;
+      color: var(--cream);
+      padding: 9px 15px;
+      border-radius: 999px;
+      border: 1px solid rgba(246, 241, 231, 0.28);
+      background: rgba(246, 241, 231, 0.08);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .sign {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(15px, 2vw, 18px);
+      color: rgba(246, 241, 231, 0.72);
+      margin-top: 2px;
+    }
+
+    /* Confort de lecture / accessibilité */
+    @media (prefers-reduced-motion: reduce) {
+      .bg { display: none; }               /* on garde le fond calme et lisible */
+      body::after { animation: none; }
+      .stage > * { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🎥 Déposez votre vidéo libre de droit dans assets/lac.mp4 (+ poster assets/lac.jpg) -->
+  <video class="bg" autoplay muted loop playsinline preload="auto"
+         poster="assets/lac.jpg" aria-hidden="true">
+    <source src="assets/lac.mp4" type="video/mp4" />
+  </video>
+
+  <div class="scrim" aria-hidden="true"></div>
+
+  <main class="stage">
+    <p class="eyebrow">Ta surprise t'attend</p>
+    <h1 class="title">Deux nuits au bord du lac,<br /><span class="em">rien que nous.</span></h1>
+    <p class="lede">
+      Une baie vitrée posée sur l'eau, le silence du matin, et toi tout contre moi.
+      Tout est déjà prêt — il ne te reste qu'à te laisser emporter. <span class="heart">💕</span>
+    </p>
+    <ul class="chips">
+      <li>📍 Au bord du lac</li>
+      <li>🪟 Baie vitrée sur l'eau</li>
+      <li>🌙 2 nuits</li>
+    </ul>
+    <p class="sign">— pour toi, mon amour</p>
+  </main>
+</body>
+</html>
