@@ -93,10 +93,11 @@
 
   /* ----------------------- Écran d'accueil ----------------------- */
   function initIntro() {
-    $("#introTitle").textContent = CONFIG.titre;
-    $("#introSub").textContent = CONFIG.sousTitre;
+    const it = $("#introTitle"); if (it) it.textContent = CONFIG.titre;
+    const is = $("#introSub"); if (is) is.textContent = CONFIG.sousTitre;
 
-    $("#startBtn").addEventListener("click", () => {
+    const sb = $("#startBtn");
+    if (sb) sb.addEventListener("click", () => {
       if (isFinished()) { showRecap(); }
       else { showScreen("quiz"); renderStep(); }
     });

@@ -14,10 +14,7 @@ const CONFIG = {
 
   // Clé de sauvegarde propre au site 2 (ne se mélange pas avec le site 1)
   storageKey: "surprise-p2-v1",
-
-  // Bouton final après le récap : mène à la révélation
-  finalLink: "reveal.html",
-  finalLabel: "✨ Découvrir ta surprise",
+  // (la révélation est désormais au DÉBUT de la partie 2, plus de bouton final)
 
   messagesMignons: [
     "J'adore ce choix 🥰",
