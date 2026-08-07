@@ -26,9 +26,9 @@ body {
   color: var(--ink);
   min-height: 100dvh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  padding: 34px 20px 48px;
   overflow-x: hidden;
   background: linear-gradient(135deg, #ffd9e2 0%, #ffc0d3 45%, #ffb3cc 100%);
   background-attachment: fixed;
@@ -64,6 +64,8 @@ body {
   z-index: 1;
   width: 100%;
   max-width: 480px;
+  /* Centrage vertical qui ne rogne jamais le haut (scroll-safe) */
+  margin: auto 0;
 }
 
 /* ---------- Écrans (transitions) ---------- */
