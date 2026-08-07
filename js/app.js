@@ -338,6 +338,18 @@
     }
   }
 
+  // Réinitialise complètement le questionnaire et repart de la 1re étape
+  function resetQuiz() {
+    state.step = 0;
+    state.answers = {};
+    state.others = {};
+    state.refus = {};
+    state.vetos = {};
+    save();
+    showScreen("quiz");
+    renderStep();
+  }
+
   function isFinished() {
     return ETAPES.every(isAnswered);
   }
@@ -479,16 +491,7 @@
       }
     });
 
-    $("#restartBtn").addEventListener("click", () => {
-      state.step = 0;
-      state.answers = {};
-      state.others = {};
-      state.refus = {};
-      state.vetos = {};
-      save();
-      showScreen("quiz");
-      renderStep();
-    });
+    $("#restartBtn").addEventListener("click", resetQuiz);
   }
 
   function fallbackCopy(text) {
@@ -554,6 +557,9 @@
     initIntro();
     initRecapActions();
     $("#backBtn").addEventListener("click", prevStep);
+    $("#resetBtn").addEventListener("click", () => {
+      if (window.confirm("Tout recommencer depuis le début ?")) resetQuiz();
+    });
     spawnBackgroundHearts();
     showScreen("intro");
   }
