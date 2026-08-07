@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#c23b6a" />
+  <title>Ma to-do — préparer la surprise ✅</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      min-height: 100dvh;
+      padding: 34px 18px 60px;
+      background: linear-gradient(135deg, #fff2f6 0%, #ffe6ef 55%, #ffdbe8 100%);
+    }
+    .wrap { max-width: 640px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 22px; }
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(28px, 7vw, 40px);
+      letter-spacing: -0.01em;
+      color: var(--plum);
+      line-height: 1.1;
+    }
+    .sub { color: var(--ink-soft); margin-top: 8px; font-size: 15px; }
+
+    .bar {
+      margin: 18px auto 26px;
+      height: 12px;
+      background: #ffffffaa;
+      border-radius: 99px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(140,30,70,0.15);
+    }
+    .bar > span {
+      display: block; height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--pink-1), var(--pink-3));
+      transition: width 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .count { text-align: center; font-weight: 700; color: var(--plum); margin-top: -14px; margin-bottom: 22px; font-size: 14px; }
+
+    .group {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 18px 8px;
+      margin-bottom: 16px;
+    }
+    .group h2 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--pink-3);
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 6px;
+      border-top: 1px solid #ffe0e9;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .item:first-of-type { border-top: none; }
+    .box {
+      flex-shrink: 0; margin-top: 1px;
+      width: 24px; height: 24px; border-radius: 8px;
+      border: 2px solid #f0aec2; background: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; color: #fff;
+      transition: background 0.2s, border-color 0.2s, transform 0.12s;
+    }
+    .item:active .box { transform: scale(0.9); }
+    .item.done .box { background: var(--pink-2); border-color: var(--pink-2); }
+    .item .txt { font-size: 15.5px; line-height: 1.4; color: var(--ink); }
+    .item.done .txt { text-decoration: line-through; color: var(--ink-soft); }
+
+    .actions { text-align: center; margin-top: 22px; }
+    .reset {
+      border: none; background: transparent; cursor: pointer;
+      color: var(--ink-soft); font-family: var(--font-body);
+      font-weight: 600; font-size: 14px; padding: 8px 14px;
+    }
+    .reset:hover { color: var(--pink-3); }
+    .foot { text-align: center; color: var(--ink-soft); font-size: 13px; margin-top: 10px; }
+    .foot a { color: var(--pink-3); font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Ma to-do surprise</h1>
+      <p class="sub">Tout ce que je dois préparer pour notre escapade 💕</p>
+    </header>
+
+    <div class="bar"><span id="bar"></span></div>
+    <div class="count" id="count"></div>
+
+    <div id="list"></div>
+
+    <div class="actions">
+      <button class="reset" id="reset">↺ Tout décocher</button>
+    </div>
+    <p class="foot">
+      🌊 <a href="partie2.html">Voir la page de révélation</a> ·
+      💌 <a href="index.html">Le quiz de Nima</a>
+    </p>
+  </div>
+
+  <script>
+    // Les tâches à préparer (modifie librement)
+    const GROUPS = [
+      { title: "🍽️ Les repas", items: [
+        "Midi : pitas sauce cacahuète (+ autre sauce)",
+        "Midi : amuse-gueules / finger food préparés",
+        "Soir : plat africain de l'Ouest (mafé / yassa / thieb…)",
+        "Réveil : brunch au lit / pancakes / raisins",
+        "Le dessert maison (selon son choix)",
+      ]},
+      { title: "👗 Les tenues", items: [
+        "Ma chemise (tenue classe)",
+        "Prévoir maillots (défilé)",
+        "Tenue cocooning / chill",
+        "La tenue sexy choisie par madame",
+      ]},
+      { title: "🕯️ La déco", items: [
+        "Bougies",
+        "Pétales de rose",
+        "Plaids & ballons",
+      ]},
+      { title: "🎬 Les films", items: [
+        "Gossip (Bridgerton, télé-réalité…)",
+        "Humour (one man show / Kevin Hart…)",
+        "Afro romantique (Sistas, La Grenouille…)",
+        "Action",
+        "🔞 selon ses choix (ou notre film 😏)",
+      ]},
+      { title: "🎵 Les musiques", items: [
+        "Playlist Romantique",
+        "Playlist Agressif",
+        "Playlist Bedroom",
+        "Playlist Années 90/2000",
+      ]},
+    ];
+
+    const KEY = "todo-surprise-v1";
+    let done = {};
+    try { done = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { done = {}; }
+
+    const listEl = document.getElementById("list");
+    let total = 0;
+    GROUPS.forEach((g, gi) => {
+      const group = document.createElement("div");
+      group.className = "group";
+      const h = document.createElement("h2");
+      h.textContent = g.title;
+      group.appendChild(h);
+      g.items.forEach((label, ii) => {
+        const id = gi + "-" + ii;
+        total++;
+        const item = document.createElement("div");
+        item.className = "item" + (done[id] ? " done" : "");
+        item.innerHTML = '<span class="box">' + (done[id] ? "✓" : "") + '</span><span class="txt"></span>';
+        item.querySelector(".txt").textContent = label;
+        item.addEventListener("click", () => {
+          done[id] = !done[id];
+          item.classList.toggle("done", done[id]);
+          item.querySelector(".box").textContent = done[id] ? "✓" : "";
+          save(); refresh();
+        });
+        group.appendChild(item);
+      });
+      listEl.appendChild(group);
+    });
+
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+    function refresh() {
+      const n = Object.values(done).filter(Boolean).length;
+      document.getElementById("bar").style.width = Math.round((n / total) * 100) + "%";
+      document.getElementById("count").textContent = n + " / " + total + " préparés";
+    }
+    document.getElementById("reset").addEventListener("click", () => {
+      if (confirm("Tout décocher ?")) {
+        done = {}; save();
+        document.querySelectorAll(".item").forEach(el => {
+          el.classList.remove("done"); el.querySelector(".box").textContent = "";
+        });
+        refresh();
+      }
+    });
+    refresh();
+  </script>
+</body>
+</html>
