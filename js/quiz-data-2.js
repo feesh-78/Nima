@@ -156,15 +156,15 @@ const ETAPES = [
   {
     id: "soir",
     emoji: "🍲",
-    question: "Le soir, on mange quoi ?",
-    hint: "À toi de choisir : note le plat qui te fait envie.",
+    question: "Le soir, on part sur quoi ?",
+    hint: "Deux ambiances possibles. Classe, ajoute un plat précis, ou mets ton veto.",
     multi: true,
     allowOther: true,
     allowRefus: true,
-    otherPlaceholder: "Le plat dont tu as envie…",
+    otherPlaceholder: "Un plat précis qui te fait envie…",
     options: [
-      { emoji: "🙋", label: "Tu choisis le plat", desc: "Je te fais confiance, dis-moi ce qui te fait envie" },
-      { emoji: "🍲", label: "Plat africain de l'Ouest", desc: "Tu me dis lequel 😉" },
+      { emoji: "🍲", label: "Ouest-africain", desc: "Yassa, mafé, jollof…" },
+      { emoji: "🥢", label: "Asiatique",      desc: "Wok, nouilles, sushis, curry…" },
     ],
   },
   {
