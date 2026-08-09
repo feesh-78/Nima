@@ -75,6 +75,10 @@
     /* Un repas : ligne surlignée */
     .slot.meal { background: #fff6ec; border-radius: 12px; }
     .slot.meal .what .txt { font-weight: 700; }
+    /* Un battement / transition à prévoir */
+    .slot.gap { background: #eaf6f7; border-radius: 12px; }
+    .slot.gap .what .txt { font-weight: 700; }
+    .tag--gap { color: #0f6f78; background: #cdeef0; }
 
     .actions { text-align: center; margin-top: 20px; }
     .reset { border: none; background: transparent; cursor: pointer; color: var(--ink-soft); font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 8px 14px; }
@@ -108,29 +112,29 @@
   <script>
     // 🗓️ Le planning (modifie librement horaires et lignes ; meal:true = repas surligné)
     const DAYS = [
-      { title: "Jour 1", emoji: "🌲", subtitle: "Arrivée en forêt", slots: [
-        { time: "17h00", txt: "Arrivée à la cabane, installation" },
-        { time: "17h30", txt: "Déco : bougies · pétales · plaids/ballons" },
-        { time: "18h30", txt: "On se prépare (tenue au choix)" },
-        { time: "20h00", txt: "Dîner dehors (resto — cuisine au choix)", meal: true },
-        { time: "22h00", txt: "Film du soir (Gossip / Humour / Afro / Action)" },
-        { time: "23h30", txt: "Moment rien qu'à nous 🔥" },
+      { title: "Jour 1", emoji: "🌲", subtitle: "Arrivée en forêt (le soir)", slots: [
+        { time: "Soir", txt: "Arrivée à la cabane, installation" },
+        { time: "", txt: "Déco : bougies · pétales · plaids/ballons" },
+        { time: "", txt: "On se prépare (tenue au choix)" },
+        { time: "", txt: "Dîner dehors (resto — cuisine au choix)", meal: true },
+        { time: "", txt: "Film du soir (Gossip / Humour / Afro / Action)" },
+        { time: "", txt: "Moment rien qu'à nous 🔥" },
       ]},
-      { title: "Jour 2", emoji: "🌊", subtitle: "Journée & nuit au bord du lac", slots: [
-        { time: "09h30", txt: "Réveil + brunch : pancakes · myrtilles · raisins", meal: true },
-        { time: "11h00", txt: "Route vers le logement au lac (baie vitrée)" },
-        { time: "12h00", txt: "Installation, on profite de la vue" },
-        { time: "13h00", txt: "Midi : pitas sauce cacahuète + finger food", meal: true },
-        { time: "14h30", txt: "Journée détente : eau, balade, musique, sieste" },
-        { time: "18h00", txt: "Jeux / ciné / apéro" },
-        { time: "20h00", txt: "Dîner dehors (resto)", meal: true },
-        { time: "21h30", txt: "Dessert (acheté ou maison)", meal: true },
-        { time: "22h30", txt: "Film + moment câlin 🔥" },
+      { title: "Jour 2", emoji: "🌲→🌊", subtitle: "Forêt → lac : la transition, puis le lac", slots: [
+        { time: "~10h", txt: "Réveil + brunch (forêt) : pancakes · myrtilles · raisins", meal: true },
+        { time: "12h00", txt: "Départ de la cabane (checkout)" },
+        { time: "12h→15h", txt: "Battement entre les 2 apparts : route, balade, courses…", gap: true },
+        { time: "", txt: "Déjeuner du midi (à voir : pitas / en route)", meal: true },
+        { time: "15h00", txt: "Arrivée au logement du lac (baie vitrée), installation" },
+        { time: "", txt: "Journée détente : eau, balade, musique, sieste" },
+        { time: "Soir", txt: "Dîner dehors (resto)", meal: true },
+        { time: "", txt: "Dessert (acheté ou maison)", meal: true },
+        { time: "", txt: "Film + moment câlin 🔥" },
       ]},
       { title: "Jour 3", emoji: "🌅", subtitle: "Matinée douce & départ", slots: [
-        { time: "10h00", txt: "Grasse matinée + petit-déj au lit", meal: true },
-        { time: "11h30", txt: "Dernier moment au bord de l'eau" },
-        { time: "12h30", txt: "Rangement & départ" },
+        { time: "Matin", txt: "Grasse matinée + petit-déj au lit", meal: true },
+        { time: "", txt: "Dernier moment au bord de l'eau" },
+        { time: "", txt: "Rangement & départ" },
       ]},
     ];
 
@@ -151,8 +155,9 @@
       d.slots.forEach((s, si) => {
         const id = di + "-" + si; total++;
         const slot = document.createElement("div");
-        slot.className = "slot" + (s.meal ? " meal" : "") + (done[id] ? " done" : "");
-        const tag = s.meal ? '<span class="tag">🍽️ REPAS</span>' : '';
+        slot.className = "slot" + (s.meal ? " meal" : "") + (s.gap ? " gap" : "") + (done[id] ? " done" : "");
+        const tag = s.meal ? '<span class="tag">🍽️ REPAS</span>'
+                  : s.gap ? '<span class="tag tag--gap">⏳ BATTEMENT 3H</span>' : '';
         slot.innerHTML =
           '<span class="box">' + (done[id] ? "✓" : "") + '</span>' +
           '<span class="time"></span>' +
