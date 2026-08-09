@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#c23b6a" />
+  <title>Notre planning 🗓️</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗓️</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      min-height: 100dvh;
+      padding: 34px 18px 60px;
+      background: linear-gradient(135deg, #fff2f6 0%, #ffe6ef 55%, #ffdbe8 100%);
+    }
+    .wrap { max-width: 660px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 20px; }
+    h1 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: clamp(28px, 7vw, 42px); letter-spacing: -0.01em;
+      color: var(--plum); line-height: 1.1;
+    }
+    .sub { color: var(--ink-soft); margin-top: 8px; font-size: 15px; }
+    .note { text-align: center; color: var(--ink-soft); font-size: 12.5px; margin: 4px 0 20px; }
+
+    .bar { margin: 16px auto 6px; height: 12px; background: #ffffffaa; border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(140,30,70,0.15); }
+    .bar > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--pink-1), var(--pink-3)); transition: width 0.4s cubic-bezier(0.22,1,0.36,1); }
+    .count { text-align: center; font-weight: 700; color: var(--plum); font-size: 13px; margin-bottom: 22px; }
+
+    .day {
+      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 18px 16px 10px; margin-bottom: 18px;
+    }
+    .day h2 {
+      font-family: var(--font-display); font-weight: 600; font-size: 21px; color: var(--pink-3);
+      display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+    }
+    .day .subtitle { font-size: 13px; color: var(--ink-soft); margin-bottom: 8px; }
+
+    .slot {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 6px; border-top: 1px solid #ffe0e9; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .slot:first-of-type { border-top: none; }
+    .box {
+      flex-shrink: 0; margin-top: 1px; width: 22px; height: 22px; border-radius: 7px;
+      border: 2px solid #f0aec2; background: var(--cream);
+      display: flex; align-items: center; justify-content: center; font-size: 13px; color: #fff;
+      transition: background 0.2s, border-color 0.2s, transform 0.12s;
+    }
+    .slot:active .box { transform: scale(0.9); }
+    .slot.done .box { background: var(--pink-2); border-color: var(--pink-2); }
+
+    .time {
+      flex-shrink: 0; min-width: 52px; font-weight: 800; font-size: 13.5px; color: var(--plum);
+      font-variant-numeric: tabular-nums; padding-top: 1px;
+    }
+    .what { flex: 1; min-width: 0; }
+    .what .txt { font-size: 15.5px; line-height: 1.4; color: var(--ink); }
+    .slot.done .what .txt { text-decoration: line-through; color: var(--ink-soft); }
+    .tag {
+      display: inline-block; margin-left: 8px; vertical-align: middle;
+      font-size: 11px; font-weight: 800; letter-spacing: 0.02em;
+      color: #a2571b; background: #ffe7c2; padding: 2px 8px; border-radius: 999px;
+    }
+    /* Un repas : ligne surlignée */
+    .slot.meal { background: #fff6ec; border-radius: 12px; }
+    .slot.meal .what .txt { font-weight: 700; }
+
+    .actions { text-align: center; margin-top: 20px; }
+    .reset { border: none; background: transparent; cursor: pointer; color: var(--ink-soft); font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 8px 14px; }
+    .reset:hover { color: var(--pink-3); }
+    .foot { text-align: center; color: var(--ink-soft); font-size: 13px; margin-top: 10px; }
+    .foot a { color: var(--pink-3); font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Notre planning</h1>
+      <p class="sub">Une nuit en forêt, puis le lac 🌲🌊</p>
+    </header>
+    <p class="note">Horaires indicatifs, à ajuster librement (dates &amp; heures réelles à confirmer).</p>
+
+    <div class="bar"><span id="bar"></span></div>
+    <div class="count" id="count"></div>
+
+    <div id="list"></div>
+
+    <div class="actions"><button class="reset" id="reset">↺ Tout décocher</button></div>
+    <p class="foot">
+      💌 <a href="index.html">Partie 1</a> ·
+      🔥 <a href="partie2.html">Partie 2</a> ·
+      ✅ <a href="todo.html">To-do</a> ·
+      🌊 <a href="reveal.html">Révélation</a>
+    </p>
+  </div>
+
+  <script>
+    // 🗓️ Le planning (modifie librement horaires et lignes ; meal:true = repas surligné)
+    const DAYS = [
+      { title: "Jour 1", emoji: "🌲", subtitle: "Arrivée en forêt", slots: [
+        { time: "17h00", txt: "Arrivée à la cabane, installation" },
+        { time: "17h30", txt: "Déco : bougies · pétales · plaids/ballons" },
+        { time: "18h30", txt: "On se prépare (tenue au choix)" },
+        { time: "20h00", txt: "Dîner dehors (resto — cuisine au choix)", meal: true },
+        { time: "22h00", txt: "Film du soir (Gossip / Humour / Afro / Action)" },
+        { time: "23h30", txt: "Moment rien qu'à nous 🔥" },
+      ]},
+      { title: "Jour 2", emoji: "🌊", subtitle: "Journée & nuit au bord du lac", slots: [
+        { time: "09h30", txt: "Réveil + brunch : pancakes · myrtilles · raisins", meal: true },
+        { time: "11h00", txt: "Route vers le logement au lac (baie vitrée)" },
+        { time: "12h00", txt: "Installation, on profite de la vue" },
+        { time: "13h00", txt: "Midi : pitas sauce cacahuète + finger food", meal: true },
+        { time: "14h30", txt: "Journée détente : eau, balade, musique, sieste" },
+        { time: "18h00", txt: "Jeux / ciné / apéro" },
+        { time: "20h00", txt: "Dîner dehors (resto)", meal: true },
+        { time: "21h30", txt: "Dessert (acheté ou maison)", meal: true },
+        { time: "22h30", txt: "Film + moment câlin 🔥" },
+      ]},
+      { title: "Jour 3", emoji: "🌅", subtitle: "Matinée douce & départ", slots: [
+        { time: "10h00", txt: "Grasse matinée + petit-déj au lit", meal: true },
+        { time: "11h30", txt: "Dernier moment au bord de l'eau" },
+        { time: "12h30", txt: "Rangement & départ" },
+      ]},
+    ];
+
+    const KEY = "planning-surprise-v1";
+    let done = {};
+    try { done = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { done = {}; }
+
+    const listEl = document.getElementById("list");
+    let total = 0;
+    DAYS.forEach((d, di) => {
+      const day = document.createElement("div");
+      day.className = "day";
+      const h = document.createElement("h2");
+      h.innerHTML = '<span>' + d.emoji + '</span> ' + d.title;
+      day.appendChild(h);
+      const st = document.createElement("p"); st.className = "subtitle"; st.textContent = d.subtitle;
+      day.appendChild(st);
+      d.slots.forEach((s, si) => {
+        const id = di + "-" + si; total++;
+        const slot = document.createElement("div");
+        slot.className = "slot" + (s.meal ? " meal" : "") + (done[id] ? " done" : "");
+        const tag = s.meal ? '<span class="tag">🍽️ REPAS</span>' : '';
+        slot.innerHTML =
+          '<span class="box">' + (done[id] ? "✓" : "") + '</span>' +
+          '<span class="time"></span>' +
+          '<span class="what"><span class="txt"></span>' + tag + '</span>';
+        slot.querySelector(".time").textContent = s.time;
+        slot.querySelector(".txt").textContent = s.txt;
+        slot.addEventListener("click", () => {
+          done[id] = !done[id];
+          slot.classList.toggle("done", done[id]);
+          slot.querySelector(".box").textContent = done[id] ? "✓" : "";
+          save(); refresh();
+        });
+        day.appendChild(slot);
+      });
+      listEl.appendChild(day);
+    });
+
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+    function refresh() {
+      const n = Object.values(done).filter(Boolean).length;
+      document.getElementById("bar").style.width = Math.round((n / total) * 100) + "%";
+      document.getElementById("count").textContent = n + " / " + total + " étapes faites";
+    }
+    document.getElementById("reset").addEventListener("click", () => {
+      if (confirm("Tout décocher ?")) {
+        done = {}; save();
+        document.querySelectorAll(".slot").forEach(el => { el.classList.remove("done"); el.querySelector(".box").textContent = ""; });
+        refresh();
+      }
+    });
+    refresh();
+  </script>
+</body>
+</html>
