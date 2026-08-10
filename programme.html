@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <style id="gate-hide">body{visibility:hidden}</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#c23b6a" />
@@ -140,7 +141,8 @@
         { id: "g3", label: "Télé-réalité", plat: "au choix" },
         { id: "g4", label: "Sh*t N Gigs", plat: "YouTube (podcast)" },
       ]},
-      { id: "humour", title: "😂 Humour", hint: "Disney+ / Netflix.", items: [
+      { id: "humour", title: "😂 Humour", hint: "Disney+ / Netflix / YouTube.", items: [
+        { id: "gary", label: "Spectacle de Gary", plat: "pendant la déco" },
         { id: "h1", label: "One man show", plat: "Netflix" },
         { id: "h2", label: "Ma famille d'abord", plat: "Disney+" },
         { id: "h3", label: "Black-ish", plat: "Disney+" },
@@ -327,5 +329,6 @@
       listEl.appendChild(group);
     });
   </script>
+  <script src="js/gate.js"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <style id="gate-hide">body{visibility:hidden}</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#c23b6a" />
@@ -56,6 +57,11 @@
     .li { padding: 9px 2px; border-top: 1px solid #ffe0e9; font-size: 15px; line-height: 1.4; display: flex; gap: 8px; }
     .li:first-of-type { border-top: none; }
     .li .em { flex-shrink: 0; }
+    .linkrow { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    .linkrow input { flex: 1; min-width: 0; font-family: var(--font-body); font-size: 14px; padding: 9px 11px; border: 1.5px solid #f3c4d4; border-radius: 10px; background: var(--cream); color: var(--ink); }
+    .linkrow input:focus { outline: none; border-color: var(--pink-2); }
+    .open { flex-shrink: 0; text-decoration: none; font-weight: 800; font-size: 13px; color: #fff; background: var(--pink-2); padding: 9px 12px; border-radius: 10px; opacity: 0.35; pointer-events: none; transition: opacity 0.15s; }
+    .open.on { opacity: 1; pointer-events: auto; }
 
     /* Checklist (courses / valise) */
     .bar { margin: 4px auto 16px; height: 11px; background: #ffffffcc; border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(140,30,70,0.15); }
@@ -160,33 +166,29 @@
       });
     });
 
-    /* ---------------- ONGLET PROGRAMME (récap lecture) ---------------- */
+    /* ---------------- ONGLET PROGRAMME (avec liens) ----------------
+       Les liens sont partagés avec la page « Liens » (programme.html)
+       via le même localStorage. Les liens 🔞 restent en local. */
     const RECAP = [
-      { title: "💅 Gossip", plat: "YouTube + Netflix", items: [
-        ["🕵️", "Suis-je mauvais ?"],
-        ["👑", "La Chronique des Bridgerton"],
-        ["📺", "Télé-réalité"],
-        ["🎙️", "Sh*t N Gigs (podcast YouTube)"],
+      { title: "💅 Gossip", plat: "YouTube + Netflix", sec: "gossip", items: [
+        ["🕵️", "Suis-je mauvais ?", "g1"],
+        ["👑", "La Chronique des Bridgerton", "g2"],
+        ["📺", "Télé-réalité", "g3"],
+        ["🎙️", "Sh*t N Gigs (podcast YouTube)", "g4"],
       ]},
-      { title: "😂 Humour", plat: "Disney+ / Netflix / YouTube", items: [
-        ["🎭", "Spectacle de Gary (pendant la déco)"],
-        ["🎤", "One man show"],
-        ["👨‍👩‍👧", "Ma famille d'abord"],
-        ["🖤", "Black-ish"],
+      { title: "😂 Humour", plat: "Disney+ / Netflix / YouTube", sec: "humour", items: [
+        ["🎭", "Spectacle de Gary (pendant la déco)", "gary"],
+        ["🎤", "One man show", "h1"],
+        ["👨‍👩‍👧", "Ma famille d'abord", "h2"],
+        ["🖤", "Black-ish", "h3"],
       ]},
-      { title: "🌍 Afro romantique", plat: "Disney+ / Paramount+", items: [
-        ["💃", "Sistas"],
-        ["🐸", "La Princesse et la Grenouille"],
-        ["💑", "Think Like a Man Too"],
+      { title: "🌍 Afro romantique", plat: "Disney+ / Paramount+", sec: "afro", items: [
+        ["💃", "Sistas", "a1"],
+        ["🐸", "La Princesse et la Grenouille", "a2"],
+        ["💑", "Think Like a Man Too", "a3"],
       ]},
-      { title: "💥 Action", plat: "Disney+", items: [
-        ["🏰", "Un Disney"],
-      ]},
-      { title: "🔞 Perso", plat: "liens privés dans l'onglet « Liens »", items: [
-        ["💋", "Film « préliminaires »"],
-        ["👩‍❤️‍👨", "Un homme, une femme"],
-        ["👯", "Plusieurs femmes, un homme"],
-        ["🎥", "On fait NOTRE film"],
+      { title: "💥 Action", plat: "Disney+", sec: "action", items: [
+        ["🏰", "Un Disney", "ac1"],
       ]},
     ];
     const DEROULE = [
@@ -198,6 +200,25 @@
       ["", "Massages, défilés 🔞🔥"],
       ["Soir", "Prépa du repas du soir devant les films & séries 🎬"],
     ];
+
+    // Store partagé avec la page « Liens »
+    const PKEY = "programme-nima-v1";
+    let pstore = { links: {}, custom: {} };
+    try { pstore = Object.assign({ links: {}, custom: {} }, JSON.parse(localStorage.getItem(PKEY) || "{}")); } catch (e) {}
+    if (!pstore.links) pstore.links = {};
+    if (!pstore.custom) pstore.custom = {};
+    function psave() { try { localStorage.setItem(PKEY, JSON.stringify(pstore)); } catch (e) {} }
+
+    function linkRow(key) {
+      const wrap = document.createElement("div"); wrap.className = "linkrow";
+      const input = document.createElement("input"); input.type = "url"; input.placeholder = "Colle le lien…";
+      input.value = pstore.links[key] || "";
+      const open = document.createElement("a"); open.className = "open"; open.textContent = "▶"; open.target = "_blank"; open.rel = "noopener";
+      function sync() { const v = input.value.trim(); if (v) { open.href = v; open.classList.add("on"); } else { open.removeAttribute("href"); open.classList.remove("on"); } }
+      input.addEventListener("input", function () { pstore.links[key] = input.value.trim(); sync(); psave(); });
+      sync(); wrap.appendChild(input); wrap.appendChild(open); return wrap;
+    }
+
     (function renderProg() {
       const panel = document.getElementById("panel-prog");
       // Déroulé Jeudi
@@ -210,19 +231,43 @@
         dc.appendChild(li);
       });
       panel.appendChild(dc);
-      // Films & séries
+      // Films & séries, avec un champ lien par ligne
       RECAP.forEach(function (g) {
         const c = document.createElement("div"); c.className = "card";
         const h = document.createElement("h2"); h.textContent = g.title; c.appendChild(h);
         if (g.plat) { const p = document.createElement("div"); p.className = "plat"; p.textContent = g.plat; c.appendChild(p); }
         g.items.forEach(function (it) {
-          const li = document.createElement("div"); li.className = "li";
-          li.innerHTML = '<span class="em">' + it[0] + '</span><span></span>';
-          li.lastChild.textContent = it[1];
-          c.appendChild(li);
+          const row = document.createElement("div"); row.className = "li"; row.style.display = "block";
+          const head = document.createElement("div"); head.style.cssText = "display:flex;gap:8px;";
+          head.innerHTML = '<span class="em">' + it[0] + '</span><span></span>';
+          head.lastChild.textContent = it[1];
+          row.appendChild(head);
+          row.appendChild(linkRow(g.sec + "." + it[2]));
+          c.appendChild(row);
         });
         panel.appendChild(c);
       });
+      // 🔞 Perso, liens privés (importés / locaux)
+      const hc = document.createElement("div"); hc.className = "card";
+      hc.innerHTML = '<h2>🔞 Perso</h2><div class="plat">Liens privés, restent sur cet appareil</div>';
+      const hot = (pstore.custom && pstore.custom.hot) || [];
+      if (!hot.length) {
+        const e = document.createElement("div"); e.className = "li";
+        e.innerHTML = '<span style="color:var(--ink-soft)"></span>';
+        e.firstChild.textContent = "Aucun lien pour l'instant. Utilise le lien d'import, ou ajoute-les dans la page « Liens ».";
+        hc.appendChild(e);
+      } else {
+        hot.forEach(function (entry, i) {
+          const row = document.createElement("div"); row.className = "li";
+          row.style.cssText = "align-items:center;justify-content:space-between;";
+          const name = document.createElement("span"); name.textContent = entry.label || ("Lien " + (i + 1));
+          const open = document.createElement("a");
+          open.className = "open on"; open.textContent = "▶ Ouvrir"; open.target = "_blank"; open.rel = "noopener"; open.href = entry.url;
+          row.appendChild(name); row.appendChild(open);
+          hc.appendChild(row);
+        });
+      }
+      panel.appendChild(hc);
     })();
 
     /* ---------------- CHECKLISTS (courses / valise) ---------------- */
@@ -316,5 +361,6 @@
     checklist("courses");
     checklist("valise");
   </script>
+  <script src="js/gate.js"></script>
 </body>
 </html>
