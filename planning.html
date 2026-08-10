@@ -113,15 +113,14 @@
   <script>
     // 🗓️ Le planning (modifie librement horaires et lignes ; meal:true = repas surligné)
     const DAYS = [
-      { title: "Jeudi", emoji: "🌤️", subtitle: "Réveil sport, brunch, puis installation au 2e logement", slots: [
+      { title: "Jeudi", emoji: "🌤️", subtitle: "Réveil sport, pique-nique dehors, puis installation au 2e logement", slots: [
         { time: "8h30", txt: "Sport, réveil en forme 💪" },
-        { time: "10h00", txt: "Préparation petit-déj / brunch, devant « Suis-je mauvais ? » + un épisode de Bridgerton", meal: true },
-        { time: "", txt: "Si pas faim : on prépare juste le pique-nique pour manger dehors", meal: true },
-        { time: "Goûter", txt: "Bridgerton sur l'ordi pendant le goûter 📺", meal: true },
+        { time: "10h00", txt: "Préparation petit-déj / brunch (si on a faim), devant « Suis-je mauvais ? » + un épisode de Bridgerton", meal: true },
+        { time: "", txt: "On prépare le pique-nique et on mange dehors 🧺", meal: true },
         { time: "15h00", txt: "Arrivée à l'appartement suivant, installation" },
-        { time: "", txt: "Petite déco à préparer, « Suis-je mauvais ? » pendant" },
-        { time: "", txt: "On passe à la musique (playlist) 🎵 puis moment rien qu'à nous 🔞" },
-        { time: "", txt: "Massage & défilé, avant de lancer un film 🔥" },
+        { time: "", txt: "Décoration en regardant le spectacle de Gary 🎭" },
+        { time: "", txt: "Massages, défilés 🔞🔥" },
+        { time: "Soir", txt: "Préparation du repas du soir devant les films choisis & séries 🎬", meal: true },
       ]},
       { title: "Jour 2", emoji: "🌲→🌊", subtitle: "Forêt → lac : la transition, puis le lac", slots: [
         { time: "~10h", txt: "Réveil + brunch (forêt) : pancakes · myrtilles · raisins", meal: true },
