@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#c23b6a" />
+  <title>Récap : films, courses & valise 🧳</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧳</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body); color: var(--ink); min-height: 100dvh;
+      padding: 30px 16px 60px;
+      background: linear-gradient(135deg, #fff2f6 0%, #ffe6ef 55%, #ffdbe8 100%);
+    }
+    .wrap { max-width: 660px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 16px; }
+    h1 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: clamp(26px, 6.5vw, 40px); letter-spacing: -0.01em; color: var(--plum); line-height: 1.1;
+    }
+    .sub { color: var(--ink-soft); margin-top: 6px; font-size: 15px; }
+
+    /* Onglets */
+    .tabs {
+      display: flex; gap: 6px; background: #ffffffaa; padding: 6px; border-radius: 16px;
+      box-shadow: inset 0 1px 3px rgba(140,30,70,0.12); margin-bottom: 18px; position: sticky; top: 8px; z-index: 5;
+      backdrop-filter: blur(6px);
+    }
+    .tab {
+      flex: 1; border: none; background: transparent; cursor: pointer;
+      font-family: var(--font-body); font-weight: 800; font-size: 13.5px; color: var(--ink-soft);
+      padding: 11px 6px; border-radius: 12px; transition: background 0.18s, color 0.18s; line-height: 1.2;
+    }
+    .tab.active { background: var(--white); color: var(--pink-3); box-shadow: var(--shadow); }
+    .panel { display: none; }
+    .panel.active { display: block; animation: fade 0.25s ease; }
+    @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+    .card {
+      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 16px 16px 10px; margin-bottom: 16px;
+    }
+    .card h2 {
+      font-family: var(--font-display); font-weight: 600; font-size: 19px; color: var(--pink-3);
+      display: flex; align-items: center; gap: 9px; margin-bottom: 4px;
+    }
+    .card .plat { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; font-weight: 600; }
+
+    /* Liste recap (films) */
+    .li { padding: 9px 2px; border-top: 1px solid #ffe0e9; font-size: 15px; line-height: 1.4; display: flex; gap: 8px; }
+    .li:first-of-type { border-top: none; }
+    .li .em { flex-shrink: 0; }
+
+    /* Checklist (courses / valise) */
+    .bar { margin: 4px auto 16px; height: 11px; background: #ffffffcc; border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(140,30,70,0.15); }
+    .bar > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--pink-1), var(--pink-3)); transition: width 0.4s cubic-bezier(0.22,1,0.36,1); }
+    .count { text-align: center; font-weight: 700; color: var(--plum); font-size: 13px; margin: -8px 0 14px; }
+
+    .item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 4px; border-top: 1px solid #ffe0e9; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .item:first-of-type { border-top: none; }
+    .box {
+      flex-shrink: 0; margin-top: 1px; width: 23px; height: 23px; border-radius: 7px;
+      border: 2px solid #f0aec2; background: var(--cream);
+      display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff;
+      transition: background 0.2s, border-color 0.2s, transform 0.12s;
+    }
+    .item:active .box { transform: scale(0.9); }
+    .item.done .box { background: var(--pink-2); border-color: var(--pink-2); }
+    .item .txt { flex: 1; min-width: 0; font-size: 15px; line-height: 1.4; color: var(--ink); }
+    .item .txt .note { display: block; font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+    .item.done .txt { text-decoration: line-through; color: var(--ink-soft); }
+    .item .rm { flex-shrink: 0; border: none; background: transparent; cursor: pointer; color: #d9a; font-size: 17px; padding: 0 4px; }
+    .item .rm:hover { color: var(--pink-3); }
+
+    .addwrap { display: flex; gap: 8px; margin: 12px 2px 4px; }
+    .addwrap input {
+      flex: 1; min-width: 0; font-family: var(--font-body); font-size: 14px; padding: 10px 12px;
+      border: 1.5px solid #f3c4d4; border-radius: 11px; background: var(--cream); color: var(--ink);
+    }
+    .addwrap input:focus { outline: none; border-color: var(--pink-2); }
+    .addwrap button {
+      flex-shrink: 0; border: none; background: var(--pink-2); color: #fff; cursor: pointer;
+      font-family: var(--font-body); font-weight: 800; font-size: 14px; padding: 10px 16px; border-radius: 11px;
+    }
+    .tools { text-align: center; margin-top: 6px; }
+    .reset { border: none; background: transparent; cursor: pointer; color: var(--ink-soft); font-family: var(--font-body); font-weight: 600; font-size: 13px; padding: 6px 12px; }
+    .reset:hover { color: var(--pink-3); }
+    .hint { font-size: 12.5px; color: var(--ink-soft); text-align: center; margin: 2px 0 12px; }
+
+    .foot { text-align: center; color: var(--ink-soft); font-size: 13px; margin-top: 18px; }
+    .foot a { color: var(--pink-3); font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Notre récap</h1>
+      <p class="sub">Le programme, les courses et la valise, au même endroit 💕</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="prog">🎬 Programme</button>
+      <button class="tab" data-tab="courses">🛒 Courses</button>
+      <button class="tab" data-tab="valise">🧳 Valise</button>
+    </div>
+
+    <!-- ONGLET 1 : PROGRAMME / FILMS & SÉRIES -->
+    <section class="panel active" id="panel-prog"></section>
+
+    <!-- ONGLET 2 : COURSES -->
+    <section class="panel" id="panel-courses">
+      <div class="bar"><span id="bar-courses"></span></div>
+      <div class="count" id="count-courses"></div>
+      <p class="hint">Coche au fur et à mesure. Ajoute ce qui manque en bas 👇</p>
+      <div id="list-courses"></div>
+      <div class="addwrap">
+        <input id="add-courses" type="text" placeholder="Ajouter un article…" />
+        <button data-add="courses">Ajouter</button>
+      </div>
+      <div class="tools"><button class="reset" data-reset="courses">↺ Tout décocher</button></div>
+    </section>
+
+    <!-- ONGLET 3 : VALISE -->
+    <section class="panel" id="panel-valise">
+      <div class="bar"><span id="bar-valise"></span></div>
+      <div class="count" id="count-valise"></div>
+      <p class="hint">Ta valise : coche ce qui est prêt, ajoute tes affaires (ou dis-moi quoi mettre).</p>
+      <div id="list-valise"></div>
+      <div class="addwrap">
+        <input id="add-valise" type="text" placeholder="Ajouter dans la valise…" />
+        <button data-add="valise">Ajouter</button>
+      </div>
+      <div class="tools"><button class="reset" data-reset="valise">↺ Tout décocher</button></div>
+    </section>
+
+    <p class="foot">
+      💌 <a href="index.html">Partie 1</a> ·
+      🔥 <a href="partie2.html">Partie 2</a> ·
+      🎬 <a href="programme.html">Liens</a> ·
+      ✅ <a href="todo.html">To-do</a> ·
+      🗓️ <a href="planning.html">Planning</a>
+    </p>
+  </div>
+
+  <script>
+    /* ---------------- ONGLETS ---------------- */
+    document.querySelectorAll(".tab").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        document.querySelectorAll(".tab").forEach(function (b) { b.classList.remove("active"); });
+        document.querySelectorAll(".panel").forEach(function (p) { p.classList.remove("active"); });
+        btn.classList.add("active");
+        document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    /* ---------------- ONGLET PROGRAMME (récap lecture) ---------------- */
+    const RECAP = [
+      { title: "💅 Gossip", plat: "YouTube + Netflix", items: [
+        ["🕵️", "Suis-je mauvais ?"],
+        ["👑", "La Chronique des Bridgerton"],
+        ["📺", "Télé-réalité"],
+        ["🎙️", "Sh*t N Gigs (podcast YouTube)"],
+      ]},
+      { title: "😂 Humour", plat: "Disney+ / Netflix / YouTube", items: [
+        ["🎭", "Spectacle de Gary (pendant la déco)"],
+        ["🎤", "One man show"],
+        ["👨‍👩‍👧", "Ma famille d'abord"],
+        ["🖤", "Black-ish"],
+      ]},
+      { title: "🌍 Afro romantique", plat: "Disney+ / Paramount+", items: [
+        ["💃", "Sistas"],
+        ["🐸", "La Princesse et la Grenouille"],
+        ["💑", "Think Like a Man Too"],
+      ]},
+      { title: "💥 Action", plat: "Disney+", items: [
+        ["🏰", "Un Disney"],
+      ]},
+      { title: "🔞 Perso", plat: "liens privés dans l'onglet « Liens »", items: [
+        ["💋", "Film « préliminaires »"],
+        ["👩‍❤️‍👨", "Un homme, une femme"],
+        ["👯", "Plusieurs femmes, un homme"],
+        ["🎥", "On fait NOTRE film"],
+      ]},
+    ];
+    const DEROULE = [
+      ["8h30", "Sport, réveil en forme 💪"],
+      ["10h00", "Petit-déj / brunch (si faim) devant « Suis-je mauvais ? » + Bridgerton"],
+      ["Midi", "Pique-nique préparé, on mange dehors 🧺"],
+      ["15h00", "Arrivée au 2e logement, installation"],
+      ["", "Déco en regardant le spectacle de Gary 🎭"],
+      ["", "Massages, défilés 🔞🔥"],
+      ["Soir", "Prépa du repas du soir devant les films & séries 🎬"],
+    ];
+    (function renderProg() {
+      const panel = document.getElementById("panel-prog");
+      // Déroulé Jeudi
+      const dc = document.createElement("div"); dc.className = "card";
+      dc.innerHTML = '<h2>🗓️ Le déroulé, Jeudi</h2>';
+      DEROULE.forEach(function (r) {
+        const li = document.createElement("div"); li.className = "li";
+        li.innerHTML = '<span class="em" style="min-width:52px;font-weight:800;color:var(--plum)">' + r[0] + '</span><span></span>';
+        li.lastChild.textContent = r[1];
+        dc.appendChild(li);
+      });
+      panel.appendChild(dc);
+      // Films & séries
+      RECAP.forEach(function (g) {
+        const c = document.createElement("div"); c.className = "card";
+        const h = document.createElement("h2"); h.textContent = g.title; c.appendChild(h);
+        if (g.plat) { const p = document.createElement("div"); p.className = "plat"; p.textContent = g.plat; c.appendChild(p); }
+        g.items.forEach(function (it) {
+          const li = document.createElement("div"); li.className = "li";
+          li.innerHTML = '<span class="em">' + it[0] + '</span><span></span>';
+          li.lastChild.textContent = it[1];
+          c.appendChild(li);
+        });
+        panel.appendChild(c);
+      });
+    })();
+
+    /* ---------------- CHECKLISTS (courses / valise) ---------------- */
+    // note: "déjà" = déjà à la maison
+    const BASE = {
+      courses: [
+        { l: "Wrap / tortilla" }, { l: "Poulet" }, { l: "Concombre" }, { l: "Tomates cerises" },
+        { l: "Maïs" }, { l: "Mangue" }, { l: "Oignons rouges" }, { l: "Salade" }, { l: "Avocat" },
+        { l: "Huile d'olive" }, { l: "Crème liquide" }, { l: "Citrons" },
+        { l: "Sel", n: "déjà à la maison" }, { l: "Poivre", n: "déjà à la maison" },
+        { l: "Cumin" }, { l: "Paprika" }, { l: "Farine" }, { l: "Œufs" }, { l: "Lait" },
+        { l: "Yaourt grec" }, { l: "Baking powder", n: "déjà à la maison" },
+        { l: "Pommes" }, { l: "Sirop d'érable" }, { l: "Cannelle" }, { l: "Baguette" },
+        { l: "Thon" }, { l: "Mayonnaise" },
+      ],
+      valise: [
+        { l: "Ma chemise (tenue classe)" },
+        { l: "Maillots de bain (défilé)" },
+        { l: "Tenue cocooning / chill" },
+        { l: "Trousse de toilette" },
+        { l: "Chargeurs (téléphone, batterie)" },
+        { l: "Enceinte + câble (musique)" },
+        { l: "Téléphone / appareil (NOTRE film)" },
+        { l: "Bougies, pétales, déco" },
+        { l: "Plaids & ballons" },
+      ],
+    };
+
+    function checklist(name) {
+      const KEY = name + "-nima-v1";
+      let store = { checked: {}, custom: [] };
+      try { store = Object.assign({ checked: {}, custom: [] }, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch (e) {}
+      if (!store.checked) store.checked = {};
+      if (!store.custom) store.custom = [];
+      let seq = store.custom.reduce(function (m, c) { return Math.max(m, c.id || 0); }, 0);
+
+      const listEl = document.getElementById("list-" + name);
+      function persist() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+
+      function render() {
+        listEl.innerHTML = "";
+        const rows = [];
+        BASE[name].forEach(function (it, i) { rows.push({ id: "b" + i, label: it.l, note: it.n, custom: false }); });
+        store.custom.forEach(function (c) { rows.push({ id: "c" + c.id, label: c.label, custom: true, cref: c }); });
+        rows.forEach(function (r) {
+          const item = document.createElement("div");
+          item.className = "item" + (store.checked[r.id] ? " done" : "");
+          const box = document.createElement("span"); box.className = "box"; box.textContent = store.checked[r.id] ? "✓" : "";
+          const txt = document.createElement("span"); txt.className = "txt"; txt.textContent = r.label;
+          if (r.note) { const nn = document.createElement("span"); nn.className = "note"; nn.textContent = r.note; txt.appendChild(nn); }
+          item.appendChild(box); item.appendChild(txt);
+          item.addEventListener("click", function (e) {
+            if (e.target.classList.contains("rm")) return;
+            store.checked[r.id] = !store.checked[r.id];
+            persist(); render();
+          });
+          if (r.custom) {
+            const rm = document.createElement("button"); rm.className = "rm"; rm.textContent = "✕"; rm.title = "Retirer";
+            rm.addEventListener("click", function () {
+              store.custom = store.custom.filter(function (c) { return c !== r.cref; });
+              delete store.checked[r.id]; persist(); render();
+            });
+            item.appendChild(rm);
+          }
+          listEl.appendChild(item);
+        });
+        refresh();
+      }
+      function refresh() {
+        const ids = BASE[name].map(function (_, i) { return "b" + i; })
+          .concat(store.custom.map(function (c) { return "c" + c.id; }));
+        const total = ids.length;
+        const n = ids.filter(function (id) { return store.checked[id]; }).length;
+        document.getElementById("bar-" + name).style.width = total ? Math.round((n / total) * 100) + "%" : "0%";
+        document.getElementById("count-" + name).textContent = n + " / " + total + " prêts";
+      }
+      // add
+      const input = document.getElementById("add-" + name);
+      function add() {
+        const v = input.value.trim(); if (!v) return;
+        store.custom.push({ id: ++seq, label: v }); input.value = ""; persist(); render();
+      }
+      document.querySelector('[data-add="' + name + '"]').addEventListener("click", add);
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") add(); });
+      // reset
+      document.querySelector('[data-reset="' + name + '"]').addEventListener("click", function () {
+        if (confirm("Tout décocher ?")) { store.checked = {}; persist(); render(); }
+      });
+      render();
+    }
+    checklist("courses");
+    checklist("valise");
+  </script>
+</body>
+</html>
