@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#c23b6a" />
+  <title>Mon programme complet 🎬</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      min-height: 100dvh;
+      padding: 34px 18px 60px;
+      background: linear-gradient(135deg, #fff2f6 0%, #ffe6ef 55%, #ffdbe8 100%);
+    }
+    .wrap { max-width: 660px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 14px; }
+    h1 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: clamp(28px, 7vw, 42px); letter-spacing: -0.01em;
+      color: var(--plum); line-height: 1.1;
+    }
+    .sub { color: var(--ink-soft); margin-top: 8px; font-size: 15px; }
+
+    .privacy {
+      background: #eaf6f7; border: 1px solid #cdeef0; color: #0f6f78;
+      border-radius: 14px; padding: 12px 14px; font-size: 13px; line-height: 1.45;
+      margin: 8px auto 22px; text-align: center;
+    }
+    .privacy b { color: #0b565d; }
+
+    .group {
+      background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 16px 16px 10px; margin-bottom: 16px;
+    }
+    .group h2 {
+      font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--pink-3);
+      display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+    }
+    .group .ghint { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 10px; }
+
+    .row {
+      border-top: 1px solid #ffe0e9; padding: 12px 2px 14px;
+    }
+    .row:first-of-type { border-top: none; }
+    .row .label { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.35; }
+    .row .plat { font-size: 12px; color: var(--ink-soft); margin-top: 1px; }
+
+    .linkrow { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    .linkrow input {
+      flex: 1; min-width: 0; font-family: var(--font-body); font-size: 14px;
+      padding: 9px 11px; border: 1.5px solid #f3c4d4; border-radius: 10px;
+      background: var(--cream); color: var(--ink);
+    }
+    .linkrow input:focus { outline: none; border-color: var(--pink-2); }
+    .open {
+      flex-shrink: 0; text-decoration: none; font-weight: 800; font-size: 13px;
+      color: #fff; background: var(--pink-2); padding: 9px 12px; border-radius: 10px;
+      opacity: 0.35; pointer-events: none; transition: opacity 0.15s;
+    }
+    .open.on { opacity: 1; pointer-events: auto; }
+    .del {
+      flex-shrink: 0; border: none; background: transparent; cursor: pointer;
+      color: #c98; font-size: 18px; padding: 2px 6px; line-height: 1;
+    }
+    .del:hover { color: var(--pink-3); }
+
+    .addbtn {
+      display: inline-block; margin: 6px 0 4px; border: 1.5px dashed #f0aec2;
+      background: transparent; color: var(--pink-3); cursor: pointer;
+      font-family: var(--font-body); font-weight: 700; font-size: 13px;
+      padding: 8px 12px; border-radius: 10px; width: 100%;
+    }
+    .addbtn:hover { background: #fff4f8; }
+
+    /* Section privée 🔞 */
+    .group.private { border: 1.5px solid #f0aec2; }
+    .group.private h2 { color: #b02a5b; }
+    .lock {
+      font-size: 12px; color: #0f6f78; background: #eaf6f7; border: 1px solid #cdeef0;
+      border-radius: 8px; padding: 6px 9px; margin-bottom: 10px;
+    }
+    .toggle {
+      border: none; background: var(--pink-2); color: #fff; cursor: pointer;
+      font-family: var(--font-body); font-weight: 800; font-size: 14px;
+      padding: 10px 14px; border-radius: 12px; width: 100%;
+    }
+    .hidden { display: none; }
+
+    .foot { text-align: center; color: var(--ink-soft); font-size: 13px; margin-top: 16px; }
+    .foot a { color: var(--pink-3); font-weight: 700; text-decoration: none; }
+    .saved { text-align: center; font-size: 12px; color: #0f6f78; height: 16px; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Mon programme</h1>
+      <p class="sub">Tout mon week-end organisé, avec les liens 🎬🍽️🎵</p>
+    </header>
+
+    <div class="privacy">
+      🔒 <b>Privé.</b> Les liens que tu colles ici restent <b>uniquement sur cet appareil</b>
+      (ce téléphone / navigateur). Ils ne sont <b>jamais publiés</b> ni envoyés en ligne.
+    </div>
+
+    <div id="list"></div>
+    <div class="saved" id="saved"></div>
+
+    <p class="foot">
+      💌 <a href="index.html">Partie 1</a> ·
+      🔥 <a href="partie2.html">Partie 2</a> ·
+      ✅ <a href="todo.html">To-do</a> ·
+      🗓️ <a href="planning.html">Planning</a> ·
+      🌊 <a href="reveal.html">Révélation</a>
+    </p>
+  </div>
+
+  <script>
+    /* Structure du programme (labels seulement, AUCUN lien ici).
+       Les liens sont saisis par toi et stockés en local (localStorage). */
+    const PROGRAMME = [
+      { id: "repas", title: "🍽️ Les repas", hint: "Colle une recette / une carte de resto si tu veux.", items: [
+        { id: "midi",    label: "Midi, mes pitas sauce cacahuète", plat: "+ finger food, amuse-gueules" },
+        { id: "soir",    label: "Soir, le plat choisi par madame", plat: "Afrique de l'Ouest / Asiatique (rolls) / autre" },
+        { id: "brunch",  label: "Réveil, brunch au lit", plat: "pancakes · myrtilles · raisins" },
+        { id: "dessert", label: "Le dessert", plat: "acheté ou fait maison" },
+      ]},
+      { id: "gossip", title: "💅 Gossip", hint: "YouTube + Netflix. Colle le lien exact de chaque contenu.", items: [
+        { id: "g1", label: "Suis-je mauvais ?", plat: "YouTube / Netflix" },
+        { id: "g2", label: "La Chronique des Bridgerton", plat: "Netflix" },
+        { id: "g3", label: "Télé-réalité", plat: "au choix" },
+        { id: "g4", label: "Sh*t N Gigs", plat: "YouTube (podcast)" },
+      ]},
+      { id: "humour", title: "😂 Humour", hint: "Disney+ / Netflix.", items: [
+        { id: "h1", label: "One man show", plat: "Netflix" },
+        { id: "h2", label: "Ma famille d'abord", plat: "Disney+" },
+        { id: "h3", label: "Black-ish", plat: "Disney+" },
+      ]},
+      { id: "afro", title: "🌍 Afro romantique", hint: "Disney+ / Paramount+.", items: [
+        { id: "a1", label: "Sistas", plat: "Paramount+" },
+        { id: "a2", label: "La Princesse et la Grenouille", plat: "Disney+" },
+        { id: "a3", label: "Think Like a Man Too", plat: "au choix" },
+      ]},
+      { id: "action", title: "💥 Action", hint: "", items: [
+        { id: "ac1", label: "Un Disney", plat: "Disney+" },
+      ]},
+      { id: "musique", title: "🎵 Les musiques", hint: "Colle tes playlists (Spotify, YouTube…).", items: [
+        { id: "m1", label: "Playlist Romantique", plat: "" },
+        { id: "m2", label: "Playlist Agressif", plat: "" },
+        { id: "m3", label: "Playlist Bedroom", plat: "" },
+        { id: "m4", label: "Playlist Années 90/2000", plat: "" },
+      ]},
+      { id: "hot", title: "🔞 Perso", hint: "", private: true, items: [] },
+    ];
+
+    const KEY = "programme-nima-v1";
+    let store = { links: {}, custom: {} };
+    try { store = Object.assign({ links: {}, custom: {} }, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch (e) {}
+    if (!store.links) store.links = {};
+    if (!store.custom) store.custom = {};
+
+    function save() {
+      try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+      const s = document.getElementById("saved");
+      s.textContent = "✓ Enregistré sur cet appareil";
+      clearTimeout(save._t);
+      save._t = setTimeout(() => { s.textContent = ""; }, 1400);
+    }
+
+    function makeLinkRow(getVal, setVal, onDelete) {
+      const wrap = document.createElement("div");
+      wrap.className = "linkrow";
+      const input = document.createElement("input");
+      input.type = "url";
+      input.placeholder = "Colle le lien ici…";
+      input.value = getVal() || "";
+      const open = document.createElement("a");
+      open.className = "open";
+      open.textContent = "▶";
+      open.target = "_blank";
+      open.rel = "noopener";
+      function sync() {
+        const v = input.value.trim();
+        if (v) { open.href = v; open.classList.add("on"); }
+        else { open.removeAttribute("href"); open.classList.remove("on"); }
+      }
+      input.addEventListener("input", () => { setVal(input.value.trim()); sync(); save(); });
+      sync();
+      wrap.appendChild(input);
+      wrap.appendChild(open);
+      if (onDelete) {
+        const del = document.createElement("button");
+        del.className = "del"; del.textContent = "✕"; del.title = "Supprimer";
+        del.addEventListener("click", onDelete);
+        wrap.appendChild(del);
+      }
+      return wrap;
+    }
+
+    const listEl = document.getElementById("list");
+
+    function renderCustom(container, g) {
+      // vide et re-rend les liens perso ajoutés (section 🔞 ou "+ ajouter")
+      const holder = container._customHolder;
+      holder.innerHTML = "";
+      const arr = store.custom[g.id] || [];
+      arr.forEach((entry, idx) => {
+        const row = document.createElement("div");
+        row.className = "row";
+        const lab = document.createElement("input");
+        lab.type = "text";
+        lab.placeholder = "Titre (ex : Vidéo 1)";
+        lab.value = entry.label || "";
+        lab.style.cssText = "width:100%;font-family:var(--font-body);font-size:14px;font-weight:600;padding:8px 10px;border:1.5px solid #f3c4d4;border-radius:10px;background:var(--cream);color:var(--ink);";
+        lab.addEventListener("input", () => { entry.label = lab.value; save(); });
+        row.appendChild(lab);
+        row.appendChild(makeLinkRow(
+          () => entry.url,
+          (v) => { entry.url = v; },
+          () => { arr.splice(idx, 1); store.custom[g.id] = arr; save(); renderCustom(container, g); }
+        ));
+        holder.appendChild(row);
+      });
+    }
+
+    PROGRAMME.forEach((g) => {
+      const group = document.createElement("div");
+      group.className = "group" + (g.private ? " private" : "");
+      const h = document.createElement("h2");
+      h.textContent = g.title;
+      group.appendChild(h);
+      if (g.hint) { const p = document.createElement("p"); p.className = "ghint"; p.textContent = g.hint; group.appendChild(p); }
+
+      const body = document.createElement("div");
+
+      if (g.private) {
+        const lock = document.createElement("div");
+        lock.className = "lock";
+        lock.innerHTML = "🔒 Ces liens restent <b>sur ton téléphone uniquement</b>, jamais publiés. Ajoute-en autant que tu veux.";
+        const toggle = document.createElement("button");
+        toggle.className = "toggle";
+        toggle.textContent = "👁️ Afficher / masquer";
+        const inner = document.createElement("div");
+        inner.className = "hidden";
+        toggle.addEventListener("click", () => inner.classList.toggle("hidden"));
+        group.appendChild(lock);
+        group.appendChild(toggle);
+
+        inner._customHolder = document.createElement("div");
+        inner.appendChild(inner._customHolder);
+        const add = document.createElement("button");
+        add.className = "addbtn";
+        add.textContent = "+ Ajouter un lien";
+        add.addEventListener("click", () => {
+          store.custom[g.id] = store.custom[g.id] || [];
+          store.custom[g.id].push({ label: "", url: "" });
+          save(); renderCustom(inner, g);
+        });
+        inner.appendChild(add);
+        renderCustom(inner, g);
+        group.appendChild(inner);
+        listEl.appendChild(group);
+        return;
+      }
+
+      g.items.forEach((it) => {
+        const row = document.createElement("div");
+        row.className = "row";
+        const label = document.createElement("div");
+        label.className = "label"; label.textContent = it.label;
+        row.appendChild(label);
+        if (it.plat) { const pl = document.createElement("div"); pl.className = "plat"; pl.textContent = it.plat; row.appendChild(pl); }
+        const lkey = g.id + "." + it.id;
+        row.appendChild(makeLinkRow(
+          () => store.links[lkey],
+          (v) => { store.links[lkey] = v; }
+        ));
+        body.appendChild(row);
+      });
+      group.appendChild(body);
+
+      // "+ ajouter un lien" perso dans chaque section (optionnel)
+      body._customHolder = document.createElement("div");
+      body.appendChild(body._customHolder);
+      const add = document.createElement("button");
+      add.className = "addbtn";
+      add.textContent = "+ Ajouter un lien à cette section";
+      add.addEventListener("click", () => {
+        store.custom[g.id] = store.custom[g.id] || [];
+        store.custom[g.id].push({ label: "", url: "" });
+        save(); renderCustom(body, g);
+      });
+      body.appendChild(add);
+      renderCustom(body, g);
+
+      listEl.appendChild(group);
+    });
+  </script>
+</body>
+</html>
