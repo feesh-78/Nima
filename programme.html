@@ -168,6 +168,28 @@
     if (!store.links) store.links = {};
     if (!store.custom) store.custom = {};
 
+    /* Import discret via #import=... (fragment jamais envoyé au serveur).
+       Charge des liens perso dans une section, en local, sans doublon,
+       puis nettoie l'URL. */
+    (function importFromHash() {
+      var m = (location.hash || "").match(/import=([^&]+)/);
+      if (!m) return;
+      try {
+        var json = decodeURIComponent(escape(atob(decodeURIComponent(m[1]))));
+        var payload = JSON.parse(json); // { section: [ {label,url}, ... ] }
+        Object.keys(payload).forEach(function (sec) {
+          store.custom[sec] = store.custom[sec] || [];
+          var have = {};
+          store.custom[sec].forEach(function (e) { if (e && e.url) have[e.url] = 1; });
+          (payload[sec] || []).forEach(function (e) {
+            if (e && e.url && !have[e.url]) { store.custom[sec].push({ label: e.label || "", url: e.url }); have[e.url] = 1; }
+          });
+        });
+        try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+      } catch (e) {}
+      try { history.replaceState(null, "", location.pathname); } catch (e) { location.hash = ""; }
+    })();
+
     function save() {
       try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
       const s = document.getElementById("saved");
