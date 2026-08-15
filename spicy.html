@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <style id="gate-hide">body{visibility:hidden}</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#7a1438" />
+  <title>Notre jeu spicy 🔥</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌶️</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body); color: #fff; min-height: 100dvh;
+      padding: 26px 16px 40px; display: flex; flex-direction: column;
+      background: radial-gradient(1200px 600px at 50% -10%, #6a1230 0%, #3a0a1c 55%, #26060f 100%);
+    }
+    .wrap { max-width: 560px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
+    header { text-align: center; margin-bottom: 14px; }
+    h1 {
+      font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 8vw, 44px);
+      letter-spacing: -0.01em; line-height: 1.05;
+      background: linear-gradient(90deg, #ffb3c9, #ff5f8f, #ff9a5f); -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sub { color: #f4c6d4; margin-top: 6px; font-size: 14px; opacity: .9; }
+
+    .levels { display: flex; gap: 8px; margin: 16px 0 10px; }
+    .lvl {
+      flex: 1; cursor: pointer; border: 1.5px solid rgba(255,255,255,.18); background: rgba(255,255,255,.05);
+      color: #f4c6d4; border-radius: 14px; padding: 11px 6px; text-align: center; font-weight: 800; font-size: 13px;
+      transition: all .18s; -webkit-tap-highlight-color: transparent; user-select: none; line-height: 1.25;
+    }
+    .lvl small { display: block; font-weight: 600; font-size: 10.5px; opacity: .7; margin-top: 2px; }
+    .lvl.on { color: #fff; border-color: transparent; box-shadow: 0 6px 20px rgba(255,60,110,.35); }
+    .lvl.l1.on { background: linear-gradient(135deg,#ff8fb0,#ff5f8f); }
+    .lvl.l2.on { background: linear-gradient(135deg,#ff5f8f,#ff3d6e); }
+    .lvl.l3.on { background: linear-gradient(135deg,#ff3d6e,#ff7a3d); }
+
+    .card {
+      position: relative; flex: 1; min-height: 300px; margin: 12px 0 18px;
+      background: linear-gradient(160deg, #fff 0%, #fff2f6 100%); color: #3a0a1c;
+      border-radius: 26px; box-shadow: 0 24px 60px rgba(0,0,0,.4);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      padding: 30px 26px; text-align: center; overflow: hidden;
+    }
+    .card::before {
+      content: ""; position: absolute; inset: 0; opacity: .07; pointer-events: none;
+      background: radial-gradient(circle at 20% 20%, #ff3d6e, transparent 40%), radial-gradient(circle at 80% 80%, #ff7a3d, transparent 40%);
+    }
+    .card.flip { animation: flip .38s cubic-bezier(.22,1,.36,1); }
+    @keyframes flip { 0% { transform: rotateY(12deg) scale(.96); opacity: .3; } 100% { transform: none; opacity: 1; } }
+
+    .badge {
+      font-weight: 800; font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 999px; color: #fff;
+    }
+    .badge.verite { background: linear-gradient(135deg,#c23b6a,#ff5f8f); }
+    .badge.action { background: linear-gradient(135deg,#ff5f8f,#ff7a3d); }
+    .who { font-size: 13px; font-weight: 800; color: #b02a5b; letter-spacing: .02em; }
+    .card .text { font-family: var(--font-display); font-weight: 600; font-size: clamp(21px, 5.6vw, 28px); line-height: 1.28; }
+    .lvltag { position: absolute; top: 16px; right: 18px; font-size: 20px; opacity: .5; }
+    .placeholder { color: #b76c85; font-size: 16px; font-family: var(--font-body); font-weight: 600; line-height: 1.5; }
+
+    .controls { display: flex; gap: 10px; }
+    .btn {
+      flex: 1; border: none; cursor: pointer; font-family: var(--font-body); font-weight: 800; font-size: 16px;
+      padding: 16px; border-radius: 16px; color: #fff; -webkit-tap-highlight-color: transparent;
+      background: linear-gradient(135deg,#ff3d6e,#ff7a3d); box-shadow: 0 10px 30px rgba(255,60,110,.4);
+      transition: transform .1s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn.ghost { flex: 0 0 auto; background: rgba(255,255,255,.08); color: #f4c6d4; box-shadow: none; border: 1.5px solid rgba(255,255,255,.16); padding: 16px 20px; }
+
+    .foot { text-align: center; color: #d9a7b8; font-size: 12.5px; margin-top: 18px; line-height: 1.6; }
+    .foot a { color: #ffb3c9; font-weight: 700; text-decoration: none; }
+    .safe { color: #d9a7b8; font-size: 11.5px; text-align: center; margin-top: 10px; opacity: .8; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Notre jeu spicy</h1>
+      <p class="sub">Piochez à deux. Choisissez l'intensité. 🔥</p>
+    </header>
+
+    <div class="levels">
+      <div class="lvl l1 on" data-lvl="1">💕 Tendre<small>chauffe en douceur</small></div>
+      <div class="lvl l2 on" data-lvl="2">🔥 Chaud<small>ça monte</small></div>
+      <div class="lvl l3 on" data-lvl="3">🌶️ Torride<small>sans limites</small></div>
+    </div>
+
+    <div class="card" id="card">
+      <span class="lvltag" id="lvltag"></span>
+      <div class="placeholder" id="ph">Choisissez un ou plusieurs niveaux,<br />puis piochez votre première carte 😏</div>
+      <span class="badge" id="badge" style="display:none"></span>
+      <div class="who" id="who" style="display:none"></div>
+      <div class="text" id="text" style="display:none"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="draw">Piocher une carte 🎴</button>
+      <button class="btn ghost" id="skip" title="Passer">Passer</button>
+    </div>
+
+    <p class="safe">💛 Tout est consenti. On rit, on respecte le « non », et on passe quand on veut.</p>
+    <p class="foot">
+      🔥 <a href="partie2.html">Partie 2</a> ·
+      🧳 <a href="recap.html">Récap</a> ·
+      🌊 <a href="reveal.html">Révélation</a>
+    </p>
+  </div>
+
+  <script>
+    /* Cartes : lvl 1=Tendre, 2=Chaud, 3=Torride ; type V=Vérité, A=Action */
+    const CARDS = [
+      // ---------- 💕 Tendre ----------
+      { lvl: 1, t: "V", x: "Quel est le tout premier truc qui t'a attiré(e) chez moi ?" },
+      { lvl: 1, t: "V", x: "Où rêves-tu que je t'embrasse en premier, là, maintenant ?" },
+      { lvl: 1, t: "V", x: "Décris en un seul mot ce que tu ressens à cet instant." },
+      { lvl: 1, t: "V", x: "Quel est ton fantasme le plus doux avec moi ?" },
+      { lvl: 1, t: "V", x: "Qu'est-ce qui te fait craquer instantanément chez moi ?" },
+      { lvl: 1, t: "A", x: "Embrasse-moi dans le cou pendant 20 secondes." },
+      { lvl: 1, t: "A", x: "Chuchote-moi un compliment un peu coquin à l'oreille." },
+      { lvl: 1, t: "A", x: "Masse-moi les épaules pendant une minute." },
+      { lvl: 1, t: "A", x: "Enlève un vêtement de ton choix." },
+      { lvl: 1, t: "A", x: "Regarde-moi dans les yeux 30 secondes sans détourner le regard." },
+      { lvl: 1, t: "A", x: "Danse lentement collé(e) à moi sur une chanson." },
+
+      // ---------- 🔥 Chaud ----------
+      { lvl: 2, t: "V", x: "Quelle est la chose la plus audacieuse que tu aies envie d'essayer avec moi ?" },
+      { lvl: 2, t: "V", x: "Où as-tu très envie que je te touche maintenant ?" },
+      { lvl: 2, t: "V", x: "Quel est ton fantasme le plus inavoué ?" },
+      { lvl: 2, t: "V", x: "Ce soir, tu préfères mener… ou te laisser guider ?" },
+      { lvl: 2, t: "A", x: "Bande-moi les yeux et fais-moi deviner où tu m'embrasses." },
+      { lvl: 2, t: "A", x: "Déshabille-moi d'un vêtement… avec les dents si tu oses." },
+      { lvl: 2, t: "A", x: "Embrasse trois endroits de mon corps, à toi de choisir lesquels." },
+      { lvl: 2, t: "A", x: "Fais-moi un strip-tease de 30 secondes." },
+      { lvl: 2, t: "A", x: "Chuchote à mon oreille ce que tu as envie de me faire." },
+      { lvl: 2, t: "A", x: "Mords-moi doucement là où tu en as envie." },
+
+      // ---------- 🌶️ Torride ----------
+      { lvl: 3, t: "V", x: "Décris précisément ce dont tu as envie dans les 10 prochaines minutes." },
+      { lvl: 3, t: "V", x: "Quel scénario te rendrait complètement fou / folle ce soir ?" },
+      { lvl: 3, t: "V", x: "Quelle position as-tu envie qu'on essaie maintenant ?" },
+      { lvl: 3, t: "A", x: "Montre-moi ton endroit préféré à embrasser… en le faisant sur moi." },
+      { lvl: 3, t: "A", x: "Prends le contrôle pendant 2 minutes. Je me laisse faire, entièrement." },
+      { lvl: 3, t: "A", x: "Guide ma main exactement là où tu en as envie." },
+      { lvl: 3, t: "A", x: "On s'embrasse passionnément jusqu'à ce qu'on pioche la prochaine carte." },
+      { lvl: 3, t: "A", x: "Refais l'action de la dernière carte… version torride." },
+    ];
+
+    const WHO = ["👩 Pour Madame", "🤵 Pour Monsieur", "💞 Tous les deux"];
+    const state = { levels: { 1: true, 2: true, 3: true }, last: null };
+
+    document.querySelectorAll(".lvl").forEach(function (el) {
+      el.addEventListener("click", function () {
+        const n = +el.dataset.lvl;
+        const on = el.classList.toggle("on");
+        state.levels[n] = on;
+        // au moins un niveau actif
+        if (!Object.values(state.levels).some(Boolean)) { el.classList.add("on"); state.levels[n] = true; }
+      });
+    });
+
+    function pool() { return CARDS.filter(function (c) { return state.levels[c.lvl]; }); }
+
+    function draw() {
+      const p = pool();
+      if (!p.length) return;
+      let pick, guard = 0;
+      do { pick = p[Math.floor(Math.random() * p.length)]; guard++; } while (p.length > 1 && pick === state.last && guard < 12);
+      state.last = pick;
+
+      const card = document.getElementById("card");
+      document.getElementById("ph").style.display = "none";
+      const badge = document.getElementById("badge");
+      const who = document.getElementById("who");
+      const text = document.getElementById("text");
+      badge.style.display = ""; who.style.display = ""; text.style.display = "";
+
+      const isV = pick.t === "V";
+      badge.textContent = isV ? "Vérité" : "Action";
+      badge.className = "badge " + (isV ? "verite" : "action");
+      who.textContent = WHO[Math.floor(Math.random() * WHO.length)];
+      text.textContent = pick.x;
+      document.getElementById("lvltag").textContent = pick.lvl === 1 ? "💕" : pick.lvl === 2 ? "🔥" : "🌶️";
+
+      card.classList.remove("flip"); void card.offsetWidth; card.classList.add("flip");
+    }
+
+    document.getElementById("draw").addEventListener("click", draw);
+    document.getElementById("skip").addEventListener("click", draw);
+  </script>
+  <script src="js/gate.js"></script>
+</body>
+</html>
