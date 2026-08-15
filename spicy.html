@@ -117,40 +117,61 @@
   <script>
     /* Cartes : lvl 1=Tendre, 2=Chaud, 3=Torride ; type V=Vérité, A=Action */
     const CARDS = [
-      // ---------- 💕 Tendre ----------
+      // ---------- 💕 Tendre (16) ----------
       { lvl: 1, t: "V", x: "Quel est le tout premier truc qui t'a attiré(e) chez moi ?" },
       { lvl: 1, t: "V", x: "Où rêves-tu que je t'embrasse en premier, là, maintenant ?" },
       { lvl: 1, t: "V", x: "Décris en un seul mot ce que tu ressens à cet instant." },
       { lvl: 1, t: "V", x: "Quel est ton fantasme le plus doux avec moi ?" },
       { lvl: 1, t: "V", x: "Qu'est-ce qui te fait craquer instantanément chez moi ?" },
+      { lvl: 1, t: "V", x: "Quel a été notre meilleur baiser jusqu'ici, et pourquoi ?" },
+      { lvl: 1, t: "V", x: "Quelle partie de mon corps préfères-tu regarder ?" },
+      { lvl: 1, t: "V", x: "Quel petit geste de ma part te fait fondre à chaque fois ?" },
       { lvl: 1, t: "A", x: "Embrasse-moi dans le cou pendant 20 secondes." },
       { lvl: 1, t: "A", x: "Chuchote-moi un compliment un peu coquin à l'oreille." },
       { lvl: 1, t: "A", x: "Masse-moi les épaules pendant une minute." },
       { lvl: 1, t: "A", x: "Enlève un vêtement de ton choix." },
       { lvl: 1, t: "A", x: "Regarde-moi dans les yeux 30 secondes sans détourner le regard." },
       { lvl: 1, t: "A", x: "Danse lentement collé(e) à moi sur une chanson." },
+      { lvl: 1, t: "A", x: "Fais glisser un doigt le long de mon bras, tout doucement." },
+      { lvl: 1, t: "A", x: "Donne-moi trois baisers, à trois endroits différents du visage." },
 
-      // ---------- 🔥 Chaud ----------
+      // ---------- 🔥 Chaud (17) ----------
       { lvl: 2, t: "V", x: "Quelle est la chose la plus audacieuse que tu aies envie d'essayer avec moi ?" },
       { lvl: 2, t: "V", x: "Où as-tu très envie que je te touche maintenant ?" },
       { lvl: 2, t: "V", x: "Quel est ton fantasme le plus inavoué ?" },
       { lvl: 2, t: "V", x: "Ce soir, tu préfères mener… ou te laisser guider ?" },
+      { lvl: 2, t: "V", x: "Quel est l'endroit le plus insolite où tu aimerais qu'on le fasse ?" },
+      { lvl: 2, t: "V", x: "Qu'est-ce qui t'excite le plus : mes mains, ma bouche, ou ma voix ?" },
+      { lvl: 2, t: "V", x: "Raconte-moi un moment où tu as eu très envie de moi en public." },
       { lvl: 2, t: "A", x: "Bande-moi les yeux et fais-moi deviner où tu m'embrasses." },
       { lvl: 2, t: "A", x: "Déshabille-moi d'un vêtement… avec les dents si tu oses." },
       { lvl: 2, t: "A", x: "Embrasse trois endroits de mon corps, à toi de choisir lesquels." },
       { lvl: 2, t: "A", x: "Fais-moi un strip-tease de 30 secondes." },
       { lvl: 2, t: "A", x: "Chuchote à mon oreille ce que tu as envie de me faire." },
       { lvl: 2, t: "A", x: "Mords-moi doucement là où tu en as envie." },
+      { lvl: 2, t: "A", x: "Embrasse-moi comme si c'était la première fois… puis comme la dernière." },
+      { lvl: 2, t: "A", x: "Guide mes mains sur toi pendant une minute, sans un mot." },
+      { lvl: 2, t: "A", x: "Envoie-moi le regard le plus sexy possible, tiens-le 15 secondes." },
+      { lvl: 2, t: "A", x: "Retire-moi un vêtement, le plus lentement possible." },
 
-      // ---------- 🌶️ Torride ----------
+      // ---------- 🌶️ Torride (17) ----------
       { lvl: 3, t: "V", x: "Décris précisément ce dont tu as envie dans les 10 prochaines minutes." },
       { lvl: 3, t: "V", x: "Quel scénario te rendrait complètement fou / folle ce soir ?" },
       { lvl: 3, t: "V", x: "Quelle position as-tu envie qu'on essaie maintenant ?" },
+      { lvl: 3, t: "V", x: "Quel fantasme n'as-tu jamais osé me demander… jusqu'à maintenant ?" },
+      { lvl: 3, t: "V", x: "Sur une échelle de 1 à 10, tu es à combien, et qu'est-ce qui te ferait monter à 10 ?" },
+      { lvl: 3, t: "V", x: "Dis-moi tout ce que tu veux que je te fasse, sans aucun filtre." },
       { lvl: 3, t: "A", x: "Montre-moi ton endroit préféré à embrasser… en le faisant sur moi." },
       { lvl: 3, t: "A", x: "Prends le contrôle pendant 2 minutes. Je me laisse faire, entièrement." },
       { lvl: 3, t: "A", x: "Guide ma main exactement là où tu en as envie." },
       { lvl: 3, t: "A", x: "On s'embrasse passionnément jusqu'à ce qu'on pioche la prochaine carte." },
       { lvl: 3, t: "A", x: "Refais l'action de la dernière carte… version torride." },
+      { lvl: 3, t: "A", x: "Déshabille-moi complètement, à ton rythme." },
+      { lvl: 3, t: "A", x: "Choisis : tu m'attaches (avec un foulard) ou je t'attache. Fais-le maintenant." },
+      { lvl: 3, t: "A", x: "Murmure-moi ton scénario le plus chaud pendant que tu me touches." },
+      { lvl: 3, t: "A", x: "Impose-moi une règle pour les 5 prochaines minutes. J'obéis." },
+      { lvl: 3, t: "A", x: "Embrasse-moi partout où je n'ai pas encore été embrassé(e) ce soir." },
+      { lvl: 3, t: "A", x: "À toi de jouer : fais-moi perdre la tête, comme tu veux." },
     ];
 
     const WHO = ["👩 Pour Madame", "🤵 Pour Monsieur", "💞 Tous les deux"];
