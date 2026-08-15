@@ -40,6 +40,14 @@
     .lvl.l2.on { background: linear-gradient(135deg,#ff5f8f,#ff3d6e); }
     .lvl.l3.on { background: linear-gradient(135deg,#ff3d6e,#ff7a3d); }
 
+    .modes { display: flex; gap: 8px; margin-bottom: 4px; }
+    .mode {
+      flex: 1; cursor: pointer; border: 1.5px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04);
+      color: #e6b8c8; border-radius: 12px; padding: 9px 6px; text-align: center; font-weight: 800; font-size: 12.5px;
+      transition: all .15s; -webkit-tap-highlight-color: transparent; user-select: none;
+    }
+    .mode.on { color: #3a0a1c; background: linear-gradient(135deg,#ffd0dd,#ffb3c9); border-color: transparent; }
+
     .card {
       position: relative; flex: 1; min-height: 300px; margin: 12px 0 18px;
       background: linear-gradient(160deg, #fff 0%, #fff2f6 100%); color: #3a0a1c;
@@ -93,6 +101,12 @@
       <div class="lvl l3 on" data-lvl="3">🌶️ Torride<small>sans limites</small></div>
     </div>
 
+    <div class="modes">
+      <div class="mode on" data-mode="V">💬 Questions</div>
+      <div class="mode" data-mode="A">🎯 Défis</div>
+      <div class="mode" data-mode="both">💞 Les deux</div>
+    </div>
+
     <div class="card" id="card">
       <span class="lvltag" id="lvltag"></span>
       <div class="placeholder" id="ph">Choisissez un ou plusieurs niveaux,<br />puis piochez votre première carte 😏</div>
@@ -126,6 +140,14 @@
       { lvl: 1, t: "V", x: "Quel a été notre meilleur baiser jusqu'ici, et pourquoi ?" },
       { lvl: 1, t: "V", x: "Quelle partie de mon corps préfères-tu regarder ?" },
       { lvl: 1, t: "V", x: "Quel petit geste de ma part te fait fondre à chaque fois ?" },
+      { lvl: 1, t: "V", x: "Qu'est-ce que je fais qui te met tout de suite à l'aise ?" },
+      { lvl: 1, t: "V", x: "Quel est ton souvenir le plus tendre de nous deux ?" },
+      { lvl: 1, t: "V", x: "Si tu devais me décrire ce soir en trois mots, lesquels ?" },
+      { lvl: 1, t: "V", x: "Qu'est-ce que tu aimes le plus quand on se réveille ensemble ?" },
+      { lvl: 1, t: "V", x: "Quelle odeur ou quel parfum te rappelle nos moments à deux ?" },
+      { lvl: 1, t: "V", x: "Quelle chanson te fait penser à nous ?" },
+      { lvl: 1, t: "V", x: "Quel compliment adorerais-tu que je te fasse plus souvent ?" },
+      { lvl: 1, t: "V", x: "À quoi penses-tu quand je te prends dans mes bras ?" },
       { lvl: 1, t: "A", x: "Embrasse-moi dans le cou pendant 20 secondes." },
       { lvl: 1, t: "A", x: "Chuchote-moi un compliment un peu coquin à l'oreille." },
       { lvl: 1, t: "A", x: "Masse-moi les épaules pendant une minute." },
@@ -143,6 +165,16 @@
       { lvl: 2, t: "V", x: "Quel est l'endroit le plus insolite où tu aimerais qu'on le fasse ?" },
       { lvl: 2, t: "V", x: "Qu'est-ce qui t'excite le plus : mes mains, ma bouche, ou ma voix ?" },
       { lvl: 2, t: "V", x: "Raconte-moi un moment où tu as eu très envie de moi en public." },
+      { lvl: 2, t: "V", x: "Quel vêtement à moi te donne le plus envie ?" },
+      { lvl: 2, t: "V", x: "Quelle scène de film la plus chaude t'a marqué(e) ?" },
+      { lvl: 2, t: "V", x: "Lumières allumées ou tamisées : ta préférence ?" },
+      { lvl: 2, t: "V", x: "Quel est ton endroit préféré sur mon corps pour poser tes lèvres ?" },
+      { lvl: 2, t: "V", x: "Y a-t-il un jeu de rôle qui te tente avec moi ?" },
+      { lvl: 2, t: "V", x: "Qu'est-ce qui te fait le plus d'effet : que je te surprenne, ou qu'on planifie ?" },
+      { lvl: 2, t: "V", x: "Quelle est la pensée la plus coquine que tu aies eue de moi aujourd'hui ?" },
+      { lvl: 2, t: "V", x: "Matin, après-midi ou nuit : ton moment préféré pour l'amour ?" },
+      { lvl: 2, t: "V", x: "Quel mot ou quelle phrase à l'oreille te fait frissonner ?" },
+      { lvl: 2, t: "V", x: "Quel accessoire aimerais-tu qu'on essaie une fois ?" },
       { lvl: 2, t: "A", x: "Bande-moi les yeux et fais-moi deviner où tu m'embrasses." },
       { lvl: 2, t: "A", x: "Déshabille-moi d'un vêtement… avec les dents si tu oses." },
       { lvl: 2, t: "A", x: "Embrasse trois endroits de mon corps, à toi de choisir lesquels." },
@@ -161,6 +193,17 @@
       { lvl: 3, t: "V", x: "Quel fantasme n'as-tu jamais osé me demander… jusqu'à maintenant ?" },
       { lvl: 3, t: "V", x: "Sur une échelle de 1 à 10, tu es à combien, et qu'est-ce qui te ferait monter à 10 ?" },
       { lvl: 3, t: "V", x: "Dis-moi tout ce que tu veux que je te fasse, sans aucun filtre." },
+      { lvl: 3, t: "V", x: "Quel fantasme voudrais-tu réaliser en premier avec moi ?" },
+      { lvl: 3, t: "V", x: "Qu'aimerais-tu que je te fasse là, tout de suite, sans avoir à le demander ?" },
+      { lvl: 3, t: "V", x: "Quelle limite serais-tu curieux(se) d'explorer avec moi ?" },
+      { lvl: 3, t: "V", x: "Dominer ou être dominé(e) : qu'est-ce qui t'excite le plus ce soir ?" },
+      { lvl: 3, t: "V", x: "Décris ton fantasme idéal, du début à la fin." },
+      { lvl: 3, t: "V", x: "Où, dans l'appartement, aurais-tu envie qu'on s'y prenne ?" },
+      { lvl: 3, t: "V", x: "Qu'est-ce qui te rend fou / folle quand je te touche à un endroit précis ?" },
+      { lvl: 3, t: "V", x: "Y a-t-il une chose que tu as toujours voulu essayer mais jamais osé dire ?" },
+      { lvl: 3, t: "V", x: "Préfères-tu me regarder, ou fermer les yeux et tout ressentir ?" },
+      { lvl: 3, t: "V", x: "Quelle est la chose la plus osée que tu ferais si personne ne pouvait juger ?" },
+      { lvl: 3, t: "V", x: "Raconte-moi le rêve le plus torride que tu aies fait sur nous." },
       { lvl: 3, t: "A", x: "Montre-moi ton endroit préféré à embrasser… en le faisant sur moi." },
       { lvl: 3, t: "A", x: "Prends le contrôle pendant 2 minutes. Je me laisse faire, entièrement." },
       { lvl: 3, t: "A", x: "Guide ma main exactement là où tu en as envie." },
@@ -175,7 +218,7 @@
     ];
 
     const WHO = ["👩 Pour Madame", "🤵 Pour Monsieur", "💞 Tous les deux"];
-    const state = { levels: { 1: true, 2: true, 3: true }, last: null };
+    const state = { levels: { 1: true, 2: true, 3: true }, mode: "V", last: null };
 
     document.querySelectorAll(".lvl").forEach(function (el) {
       el.addEventListener("click", function () {
@@ -187,7 +230,19 @@
       });
     });
 
-    function pool() { return CARDS.filter(function (c) { return state.levels[c.lvl]; }); }
+    document.querySelectorAll(".mode").forEach(function (el) {
+      el.addEventListener("click", function () {
+        document.querySelectorAll(".mode").forEach(function (m) { m.classList.remove("on"); });
+        el.classList.add("on");
+        state.mode = el.dataset.mode;
+      });
+    });
+
+    function pool() {
+      return CARDS.filter(function (c) {
+        return state.levels[c.lvl] && (state.mode === "both" || c.t === state.mode);
+      });
+    }
 
     function draw() {
       const p = pool();
