@@ -4,6 +4,7 @@
 
 /* global Phaser */
 
+import "./ui/toast.js";
 import { TitleScene } from "./scenes/TitleScene.js";
 import { initScreens } from "./ui/screens.js";
 import { initPwa } from "./ui/pwa.js";

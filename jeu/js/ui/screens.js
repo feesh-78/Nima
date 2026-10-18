@@ -5,11 +5,31 @@
 
 import { saveManager } from "../systems/save-manager.js";
 import { formatPlayTime } from "../systems/save-format.js";
+import { showError } from "./toast.js";
 
 const $ = (sel) => document.querySelector(sel);
 
 function show(id) {
   document.querySelectorAll(".screen").forEach((el) => el.classList.toggle("is-active", el.id === id));
+}
+
+/* Branche une action sur un élément : bouton désactivé pendant l'action,
+   et message visible en cas de problème. */
+function on(sel, event, action) {
+  const el = $(sel);
+  el.addEventListener(event, async (e) => {
+    if (event === "submit") e.preventDefault();
+    const btn = el.tagName === "FORM" ? el.querySelector("[type=submit]") : el;
+    if (btn.disabled) return;
+    btn.disabled = true;
+    try {
+      await action();
+    } catch (err) {
+      showError(err);
+    } finally {
+      btn.disabled = false;
+    }
+  });
 }
 
 function formatDate(ts) {
@@ -38,7 +58,6 @@ function renderHub(save) {
   $("#hub-coins").textContent = save.wallet.coins;
   $("#hub-sparkles").textContent = save.wallet.sparkles;
   $("#hub-playtime").textContent = formatPlayTime(save.stats.playTimeSec);
-  $("#hub-sessions").textContent = save.stats.sessions;
   $("#hub-created").textContent = formatDate(save.createdAt);
 }
 
@@ -47,34 +66,36 @@ export function initScreens() {
     if ($("#screen-hub").classList.contains("is-active")) renderHub(save);
   });
 
-  $("#btn-continue").addEventListener("click", async () => {
+  on("#btn-continue", "click", async () => {
     const save = await saveManager.continueGame();
-    if (!save) return renderTitle();
+    if (!save) {
+      await renderTitle();
+      throw new Error("partie introuvable sur ce téléphone");
+    }
     renderHub(save);
     show("screen-hub");
   });
 
-  $("#btn-new").addEventListener("click", async () => {
+  on("#btn-new", "click", async () => {
     const existing = await saveManager.peek();
     $("#new-warning").hidden = !existing;
     $("#input-name").value = existing?.player.name || "Nima";
     show("screen-new");
   });
 
-  $("#form-new").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  on("#form-new", "submit", async () => {
     $("#input-name").blur();
     const save = await saveManager.newGame($("#input-name").value);
     renderHub(save);
     show("screen-hub");
   });
 
-  $("#btn-new-back").addEventListener("click", renderTitle);
+  on("#btn-new-back", "click", renderTitle);
 
-  $("#btn-hub-back").addEventListener("click", async () => {
-    await saveManager.flush();
-    renderTitle();
+  on("#btn-hub-back", "click", async () => {
+    await saveManager.flush().catch(showError);
+    await renderTitle();
   });
 
-  return renderTitle();
+  return renderTitle().catch(showError);
 }
