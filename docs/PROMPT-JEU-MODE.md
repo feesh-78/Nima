@@ -119,21 +119,23 @@ Une réussite donne de 1 à 3 étoiles :
 3. **Rush des soldes** : des articles tombent, on glisse un panier pour attraper ceux
    de la liste et éviter les fautes de goût.
 
-## 5. Ambiance visuelle (à proposer, puis on ajuste)
+## 5. Ambiance visuelle (validée)
 
-Propose **deux directions artistiques** dès la phase 1, sous forme d'écran de test,
-pour que Nima choisisse :
-- **A. « Pastel chic »** : couleurs douces (rose poudré, crème, sauge, lavande),
-  formes arrondies, typographie élégante, style illustration plate.
-- **B. « Pixel art cosy »** : pixel art moderne vu de dessus, très lisible, chaleureux.
+**Style « poupée mannequin Y2K »**, inspiré des jeux de mode DS / PS2 des années 2000
+(type Bratz, Barbie, Winx) : grosse tête, grands yeux en amande maquillés, lèvres
+glossy, silhouette fine, plateformes, cheveux volumineux et brillants. Interface
+glam : violet nuit, rose fluo, paillettes, boutons « bonbon » brillants, logo chromé.
 
-Contraintes :
-- **Graphismes** : utiliser des ressources **libres de droits (CC0)** ou dessinées en
-  **SVG directement dans le code**. Les SVG permettent de recolorer facilement les
-  vêtements, ce qui multiplie le contenu sans multiplier les fichiers. Toujours noter
-  la source et la licence de chaque ressource dans `jeu/CREDITS.md`.
-- Interface en **français**, tutoiement, ton complice.
-- Animations douces (transitions, rebonds, paillettes) mais fluides sur iPhone.
+- **L'héroïne** est métisse (peau caramel, longs cheveux bruns bouclés avec mèches
+  caramel, yeux marron). Son visage doit rester **identique** sur toutes les images.
+- **Les tenues** sont des **illustrations complètes** de l'héroïne (pas de calques),
+  générées par IA avec l'outil d'images Canva, **en donnant toujours l'image de
+  référence** (`canva` de la tenue « basique » dans `data/outfits.json`, fond retiré :
+  MAHYZlovxfg ; image d'origine avec fond : MAHYZr503mI) pour garder le même visage.
+  Fond retiré ensuite (outil « remove background »), image en PNG transparent.
+- **Variété des styles** : classe, chic, décontracté, preppy, soirée, Y2K, sport…
+  Pas uniquement des looks provocants.
+- Toujours noter la source de chaque image dans `jeu/CREDITS.md`.
 
 ## 6. Exigences techniques
 
@@ -266,8 +268,7 @@ Mission de l'agent, dans l'ordre :
 
 ## 10. Questions ouvertes (à trancher avant ou pendant le développement)
 - [x] **Nom du jeu et de la ville** : **Nini City**
-- [ ] **Direction artistique** : A « Pastel chic » ou B « Pixel art cosy » (choix à la
-      phase 1 ; l'écran titre de la phase 0 est en « Pastel chic »)
+- [x] **Direction artistique** : poupée mannequin Y2K glam (voir section 5)
 - [x] **Agent de nuit** : **validation chaque matin au début**. L'agent prépare ses
       changements sur une branche et ouvre une demande de fusion (pull request) ;
       rien n'est publié sans accord. On passera en publication automatique plus tard.
@@ -278,6 +279,11 @@ Mission de l'agent, dans l'ordre :
 - [x] **Phase 0 : Fondations** (v0.1.0) : écran titre animé, nouvelle partie avec prénom,
       sauvegarde automatique sur le téléphone, fonctionnement hors ligne, aide
       d'installation sur l'écran d'accueil, bandeau de mise à jour, 11 tests.
+- [x] **Phase 1 : Héroïne, dressing et boutique** (v0.2.0) : héroïne illustrée,
+      4 tenues (1 offerte, 3 en boutique), dressing, achat avec les pièces, cadeau du
+      jour (+30 pièces), interface glam. ⚠️ Les images sont encore des aperçus en basse
+      définition (133 × 200) : à remplacer par les versions HD dès que l'accès réseau
+      à Canva est ouvert.
 
 ---
 

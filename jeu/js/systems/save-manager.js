@@ -46,6 +46,15 @@ class SaveManager {
     return this.save;
   }
 
+  /* Modifie la partie (fn reçoit la sauvegarde et renvoie la nouvelle),
+     prévient l'interface, puis enregistre en arrière-plan. */
+  update(fn) {
+    this.save = fn(this.save);
+    this.#emit();
+    this.flush().catch((err) => console.error("[sauvegarde]", err));
+    return this.save;
+  }
+
   /* Ajoute le temps écoulé puis écrit la sauvegarde. */
   async flush() {
     if (!this.save) return;

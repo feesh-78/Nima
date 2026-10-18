@@ -8,7 +8,7 @@
    Les tests vérifient ces deux points.
    ======================================================================= */
 
-const VERSION = "0.1.2";
+const VERSION = "0.2.0";
 const CACHE = `nini-city-${VERSION}`;
 const RUNTIME = "nini-city-runtime";
 
@@ -20,12 +20,18 @@ const PRECACHE = [
   "js/main.js",
   "js/version.js",
   "js/scenes/TitleScene.js",
+  "js/systems/content.js",
   "js/systems/save-format.js",
   "js/systems/save-manager.js",
   "js/systems/storage.js",
   "js/ui/pwa.js",
   "js/ui/screens.js",
   "js/ui/toast.js",
+  "data/outfits.json",
+  "assets/outfits/basique.png",
+  "assets/outfits/classe.png",
+  "assets/outfits/preppy.png",
+  "assets/outfits/soiree.png",
   "vendor/phaser-3.90.0.min.js",
   "assets/icons/icon-180.png",
   "assets/icons/icon-192.png",

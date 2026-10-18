@@ -13,7 +13,7 @@ import { GAME_VERSION } from "./version.js";
 new Phaser.Game({
   type: Phaser.AUTO,
   parent: "game",
-  backgroundColor: "#f7d6de",
+  backgroundColor: "#3a0d5c",
   scale: { mode: Phaser.Scale.RESIZE, width: "100%", height: "100%" },
   banner: false,
   scene: [TitleScene],

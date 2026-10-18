@@ -29,7 +29,8 @@ js/main.js            → démarrage
 js/scenes/            → décors et scènes Phaser
 js/ui/                → écrans HTML (accueil, nouvelle partie…)
 js/systems/           → sauvegarde et règles du jeu
-data/                 → le contenu du jeu (vêtements, missions…), à venir
+data/outfits.json     → ⭐ le catalogue des tenues (nom, style, prix, image)
+assets/outfits/       → les illustrations des tenues (PNG transparent)
 vendor/               → Phaser 3.90.0 (copie locale pour le hors ligne)
 tests/                → tests automatiques
 ```

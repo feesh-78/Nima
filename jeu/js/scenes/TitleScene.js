@@ -1,16 +1,16 @@
 /* =======================================================================
-   Décor animé de l'écran d'accueil (Phaser) : ciel pastel, silhouette
-   de Nini City et paillettes qui flottent. L'interface (boutons,
+   Décor animé de l'écran d'accueil (Phaser) : ciel du soir fuchsia,
+   Nini City illuminée de néons et paillettes qui scintillent. L'interface (boutons,
    textes) est en HTML par-dessus, voir js/ui/screens.js.
    ======================================================================= */
 
 /* global Phaser */
 
-const SKY_TOP = 0xf7d6de; // rose poudré
-const SKY_BOTTOM = 0xd9cdef; // lavande
-const BUILDINGS_BACK = 0xe7d3ea;
-const BUILDINGS_FRONT = 0xc9b3dc;
-const WINDOW_LIGHT = 0xfff3d6;
+const SKY_TOP = 0x3a0d5c; // violet nuit
+const SKY_BOTTOM = 0xff3d9a; // rose fluo
+const BUILDINGS_BACK = 0x7a2a8e;
+const BUILDINGS_FRONT = 0x4a1466;
+const NEONS = [0xff7ad0, 0x7af3ff, 0xfff27a, 0xffffff];
 
 export class TitleScene extends Phaser.Scene {
   constructor() {
@@ -39,8 +39,8 @@ export class TitleScene extends Phaser.Scene {
         Phaser.Math.Between(0, w),
         Phaser.Math.Between(0, h * 0.6),
         Phaser.Math.Between(40, 110),
-        0xffffff,
-        0.18,
+        0xff9fd8,
+        0.16,
       );
       if (!this.reducedMotion) {
         this.tweens.add({
@@ -59,7 +59,8 @@ export class TitleScene extends Phaser.Scene {
     this.drawSkyline(h * 0.8, BUILDINGS_FRONT, 0.85, true);
 
     // Trottoir
-    this.add.rectangle(0, h * 0.8, w, h * 0.2, 0xf3e6ef).setOrigin(0, 0);
+    this.add.rectangle(0, h * 0.8, w, h * 0.2, 0x2a0b3d).setOrigin(0, 0);
+    this.add.rectangle(0, h * 0.8, w, 3, 0xff7ad0, 0.9).setOrigin(0, 0);
 
     this.spawnSparkles(w, h);
   }
@@ -77,7 +78,7 @@ export class TitleScene extends Phaser.Scene {
         for (let wy = baseY - bh + 12; wy < baseY - 14; wy += 18) {
           for (let wx = x + 9; wx < x + bw - 12; wx += 14) {
             if (Math.random() < 0.55) {
-              g.fillStyle(WINDOW_LIGHT, Phaser.Math.FloatBetween(0.55, 0.95));
+              g.fillStyle(Phaser.Utils.Array.GetRandom(NEONS), Phaser.Math.FloatBetween(0.6, 1));
               g.fillRoundedRect(wx, wy, 6, 9, 2);
             }
           }
