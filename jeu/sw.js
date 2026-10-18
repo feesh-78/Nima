@@ -8,7 +8,7 @@
    Les tests vérifient ces deux points.
    ======================================================================= */
 
-const VERSION = "0.1.0";
+const VERSION = "0.1.1";
 const CACHE = `nini-city-${VERSION}`;
 const RUNTIME = "nini-city-runtime";
 
@@ -29,7 +29,6 @@ const PRECACHE = [
   "assets/icons/icon-180.png",
   "assets/icons/icon-192.png",
   "assets/icons/icon-512.png",
-  "../js/gate.js",
 ];
 
 self.addEventListener("install", (event) => {

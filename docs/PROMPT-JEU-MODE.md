@@ -207,9 +207,9 @@ jeu/
 - Performance : 60 images/seconde visées sur un iPhone récent, assets légers.
 - Quand une nouvelle version est disponible, l'afficher avec un bouton « Mettre à jour ».
 
-### 6.5 Accès privé
-- Le site a déjà un rideau de mot de passe (`js/gate.js`). Le réutiliser pour le jeu
-  si possible, sinon le jeu reste accessible par son lien seul.
+### 6.5 Accès
+- **Pas de mot de passe** pour le jeu : il est accessible directement par son lien
+  (le rideau `js/gate.js` du reste du site ne s'applique pas à `jeu/`).
 
 ## 7. Plan de développement par phases
 
