@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <style id="gate-hide">body{visibility:hidden}</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Nini City</title>
+  <meta name="description" content="Ta vie de styliste à Nini City." />
+  <meta name="theme-color" content="#f7d6de" />
+
+  <!-- Mode app sur l'écran d'accueil de l'iPhone -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Nini City" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-180.png" />
+  <link rel="icon" type="image/png" href="assets/icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/game.css" />
+</head>
+<body>
+  <!-- Décor animé (Phaser) -->
+  <div id="game" aria-hidden="true"></div>
+
+  <!-- Interface -->
+  <main id="ui">
+    <div class="pill" id="offline-pill" hidden>📴 Hors ligne</div>
+
+    <!-- ============ ACCUEIL ============ -->
+    <section class="screen is-active" id="screen-title">
+      <div class="logo">
+        <div class="logo-kicker">✦ bienvenue à ✦</div>
+        <h1 class="logo-title">Nini <em>City</em></h1>
+        <p class="logo-sub">Ta vie de styliste commence ici</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="btn-continue" hidden>
+          Continuer
+          <span class="btn-detail" id="continue-detail"></span>
+        </button>
+        <button class="btn btn--primary" id="btn-new">Nouvelle partie</button>
+      </div>
+
+      <footer class="title-footer">
+        <button class="link" id="btn-install" hidden>📲 Installer sur l'iPhone</button>
+        <span class="version" data-version></span>
+      </footer>
+    </section>
+
+    <!-- ============ NOUVELLE PARTIE ============ -->
+    <section class="screen" id="screen-new">
+      <form class="card" id="form-new">
+        <div class="card-emoji">👗</div>
+        <h2 class="card-title">Comment t'appelles-tu ?</h2>
+        <p class="card-text">C'est le prénom que tout le monde connaîtra à Nini City.</p>
+        <input class="input" id="input-name" type="text" maxlength="20"
+               autocomplete="off" autocapitalize="words" enterkeyhint="go" required />
+        <p class="card-warning" id="new-warning" hidden>
+          Ta partie actuelle sera mise de côté (une copie de secours est gardée).
+        </p>
+        <button class="btn btn--primary" type="submit">C'est parti ✨</button>
+        <button class="btn btn--ghost" type="button" id="btn-new-back">Retour</button>
+      </form>
+    </section>
+
+    <!-- ============ HUB (provisoire, phase 0) ============ -->
+    <section class="screen" id="screen-hub">
+      <div class="card">
+        <div class="card-emoji">🏙️</div>
+        <h2 class="card-title">Bienvenue à Nini City, <span id="hub-name"></span> !</h2>
+
+        <div class="wallet">
+          <span class="chip">💰 <b id="hub-coins"></b> pièces</span>
+          <span class="chip">💎 <b id="hub-sparkles"></b> paillettes</span>
+        </div>
+
+        <dl class="stats">
+          <div><dt>Temps de jeu</dt><dd id="hub-playtime"></dd></div>
+          <div><dt>Sessions</dt><dd id="hub-sessions"></dd></div>
+          <div><dt>Arrivée en ville</dt><dd id="hub-created"></dd></div>
+        </dl>
+
+        <p class="card-text">
+          🏗️ La ville est encore en chantier. Prochaine étape : créer ton
+          personnage et choisir le style du jeu.
+        </p>
+        <p class="card-hint">
+          Petit test : ferme complètement l'app puis rouvre-la, ta partie t'attend.
+        </p>
+        <button class="btn btn--ghost" id="btn-hub-back">Retour à l'accueil</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Aide « Ajouter à l'écran d'accueil » -->
+  <div class="sheet-backdrop" id="a2hs" hidden>
+    <div class="sheet" role="dialog" aria-labelledby="a2hs-title">
+      <h2 class="sheet-title" id="a2hs-title">Installe Nini City 📲</h2>
+      <ol class="sheet-steps">
+        <li>Touche le bouton <b>Partager</b> <span class="share-icon" aria-hidden="true">⬆︎</span> de Safari</li>
+        <li>Choisis <b>« Sur l'écran d'accueil »</b></li>
+        <li>Ouvre Nini City depuis sa nouvelle icône</li>
+      </ol>
+      <p class="sheet-note">
+        Le jeu s'ouvre alors en plein écran, marche sans connexion et ta
+        progression est mieux protégée.
+      </p>
+      <button class="btn btn--primary" id="btn-a2hs-close">Compris</button>
+    </div>
+  </div>
+
+  <!-- Nouvelle version disponible -->
+  <div class="update-banner" id="update-banner" hidden>
+    <span>✨ Nouvelle version disponible</span>
+    <button class="btn btn--small" id="btn-update">Mettre à jour</button>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="vendor/phaser-3.90.0.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="../js/gate.js"></script>
+</body>
+</html>

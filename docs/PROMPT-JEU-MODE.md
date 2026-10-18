@@ -1,4 +1,4 @@
-# 👗 Prompt de développement : jeu de mode pour Nima
+# 👗 Nini City : prompt de développement du jeu de mode de Nima
 
 > Ce document est le **prompt maître** à donner à Claude Code pour développer le jeu.
 > Il se lit d'un bloc la première fois, puis on avance **phase par phase**
@@ -22,7 +22,7 @@ Donc :
 ## 2. Le concept en une phrase
 
 **Un « Léa Passion Mode » moderne, avec la vie de quartier des Sims et les histoires
-à rebondissements de Gossip Harbor** : Nima arrive dans une grande ville, s'installe
+à rebondissements de Gossip Harbor** : Nima arrive à **Nini City**, une grande ville, s'installe
 dans son appartement, se balade sur une carte vue de dessus, fait du shopping,
 relève des missions de stylisme et des mini-jeux pour grimper les échelons de la mode
 et étoffer son dressing.
@@ -31,9 +31,10 @@ Inspirations : Léa Passion Mode (DS), Les Sims, Gossip Harbor, DREST, Hollywood
 
 ## 3. Principes de jeu (non négociables)
 
-1. **On ne perd jamais.** Comme dans les Sims : chaque mission réussit, avec un
-   résultat de 1 à 3 étoiles. Les étoiles donnent plus ou moins de récompenses, mais
-   jamais d'échec, de vie perdue ou de game over.
+1. **Jamais de game over, jamais rien de perdu.** On peut rater un mini-jeu ou une
+   mission : on la **retente simplement, autant de fois qu'on veut**. Rater ne fait
+   jamais perdre de pièces, de vêtements, de meubles ni de progression. Une réussite
+   rapporte de 1 à 3 étoiles, et plus d'étoiles donnent plus de récompenses.
 2. **Pas de son.** Aucun son ni musique. Les retours sont visuels : animations,
    paillettes, vibrations légères (`navigator.vibrate` quand c'est disponible).
 3. **Sessions courtes et agréables** : on doit pouvoir jouer 5 minutes dans le métro.
@@ -55,7 +56,7 @@ Inspirations : Léa Passion Mode (DS), Les Sims, Gossip Harbor, DREST, Hollywood
   **grande poupée de face** pour le dressing et les missions de style.
 
 ### 4.2 La ville (carte vue de dessus)
-- Une grande ville stylisée vue de dessus, explorée en **touchant l'endroit où
+- **Nini City**, une grande ville stylisée vue de dessus, explorée en **touchant l'endroit où
   aller** (déplacement automatique) ou avec un **joystick virtuel**.
 - La caméra suit l'héroïne. La ville est plus grande que l'écran.
 - Lieux de départ (à enrichir plus tard) :
@@ -108,7 +109,8 @@ Inspirations : Léa Passion Mode (DS), Les Sims, Gossip Harbor, DREST, Hollywood
 - Ton : feel-good, un peu de drama et de potins, de l'humour, jamais sombre.
 
 ### 4.6 Mini-jeux (3 au départ, d'autres plus tard)
-Courts (30 à 90 secondes), sans échec, de 1 à 3 étoiles :
+Courts (30 à 90 secondes). On peut rater et retenter librement, sans rien perdre.
+Une réussite donne de 1 à 3 étoiles :
 1. **Atelier de couture (fusion)** : sur une grille, fusionner deux objets identiques
    pour obtenir l'objet suivant (fil → tissu → patron → vêtement). Le vêtement obtenu
    rejoint le dressing. C'est la mécanique de Gossip Harbor, appliquée à la mode.
@@ -138,7 +140,7 @@ Contraintes :
 ### 6.1 Technologies
 | Besoin | Choix | Pourquoi |
 |---|---|---|
-| Moteur 2D (carte, mini-jeux, appartement) | **Phaser 3**, chargé depuis un CDN avec une version exacte | Moteur 2D de référence pour le web, gère tactile, caméra et animations |
+| Moteur 2D (carte, mini-jeux, appartement) | **Phaser 3.90.0**, copié dans `jeu/vendor/` | Moteur 2D de référence pour le web, gère tactile, caméra et animations. La copie locale garantit le hors ligne |
 | Menus, dressing, dialogues, boutiques | **HTML + CSS** par-dessus le canvas | Plus simple et plus net pour les interfaces |
 | Code | **JavaScript moderne (modules ES)**, **sans étape de build** | Même approche que le reste du site : rien à installer, GitHub Pages sert les fichiers tels quels |
 | Hors connexion + écran d'accueil | **PWA** : `manifest.webmanifest` + service worker écrit à la main | Plein écran, icône, fonctionne sans réseau |
@@ -251,7 +253,7 @@ Mission de l'agent, dans l'ordre :
    - lancer les tests : si un test échoue, ne rien publier ;
    - laisser une note dans `jeu/data/journal.json`, affichée dans le jeu comme
      « 📰 Les nouveautés du jour ».
-4. Publier (selon le mode choisi, voir les questions ouvertes) et écrire un résumé de
+4. Proposer le changement (au début : une pull request à valider le matin) et écrire un résumé de
    la nuit dans `jeu/JOURNAL-AGENT.md`.
 
 ## 9. Définition de « terminé » pour chaque phase
@@ -263,21 +265,26 @@ Mission de l'agent, dans l'ordre :
 - Un résumé en français explique comment tester.
 
 ## 10. Questions ouvertes (à trancher avant ou pendant le développement)
-- [ ] **Nom du jeu** (provisoire : « Nima Style »)
-- [ ] **Nom de la ville** (provisoire : « Lumière City »)
-- [ ] **Direction artistique** : A « Pastel chic » ou B « Pixel art cosy » (choix à la phase 1)
-- [ ] **Agent de nuit** : publication automatique, ou validation chaque matin avant
-      mise en ligne ?
-- [ ] **Compte Supabase** : à créer par le commanditaire avant la phase 7 (gratuit,
-      5 minutes ; Claude explique la marche à suivre pas à pas)
+- [x] **Nom du jeu et de la ville** : **Nini City**
+- [ ] **Direction artistique** : A « Pastel chic » ou B « Pixel art cosy » (choix à la
+      phase 1 ; l'écran titre de la phase 0 est en « Pastel chic »)
+- [x] **Agent de nuit** : **validation chaque matin au début**. L'agent prépare ses
+      changements sur une branche et ouvre une demande de fusion (pull request) ;
+      rien n'est publié sans accord. On passera en publication automatique plus tard.
+- [x] **Compte Supabase** : le commanditaire en a déjà un (il faudra juste créer le
+      projet et donner l'URL et la clé publique à la phase 7)
+
+## 11. Avancement
+- [x] **Phase 0 : Fondations** (v0.1.0) : écran titre animé, nouvelle partie avec prénom,
+      sauvegarde automatique sur le téléphone, fonctionnement hors ligne, aide
+      d'installation sur l'écran d'accueil, bandeau de mise à jour, 11 tests.
 
 ---
 
 ## ▶️ Prompt de démarrage (à copier pour lancer la phase 0)
 
 > Lis `docs/PROMPT-JEU-MODE.md` en entier. Réalise la **phase 0 (Fondations)** dans le
-> dossier `jeu/` : PWA installable sur iPhone, Phaser 3 chargé depuis un CDN avec une
-> version exacte, écran titre aux couleurs « Pastel chic », sauvegarde locale
+> dossier `jeu/` : PWA installable sur iPhone, Phaser 3 copié dans `jeu/vendor/`, écran titre aux couleurs « Pastel chic », sauvegarde locale
 > versionnée dans IndexedDB, fonctionnement hors ligne, un premier test `node --test`.
 > Ne touche pas aux autres pages du site. Quand c'est fini, commit, push, puis
 > explique-moi en français simple comment tester sur iPhone.
