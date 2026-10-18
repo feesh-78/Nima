@@ -1,0 +1,358 @@
+/* =======================================================================
+   🎨 Style « Pastel chic » de Nini City
+   Les couleurs et polices se règlent ici, dans :root.
+   ======================================================================= */
+
+:root {
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  --powder: #f7d6de;   /* rose poudré */
+  --lavender: #d9cdef;
+  --sage: #b9cdb6;
+  --cream: #fffaf6;
+  --accent: #c8587e;   /* rose framboise des boutons */
+  --accent-dark: #a63f64;
+  --ink: #4a3442;
+  --ink-soft: #85697a;
+
+  --radius: 22px;
+  --shadow: 0 14px 40px rgba(120, 60, 95, 0.18);
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  background: var(--powder);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+[hidden] { display: none !important; }
+
+#game, #game canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#ui {
+  position: fixed;
+  inset: 0;
+  padding: calc(var(--safe-top) + 16px) 16px calc(var(--safe-bottom) + 16px);
+  pointer-events: none;
+}
+
+#ui button, #ui input, #ui form, #ui .card { pointer-events: auto; }
+
+/* ---------- Écrans ---------- */
+
+.screen {
+  position: absolute;
+  inset: calc(var(--safe-top) + 16px) 16px calc(var(--safe-bottom) + 16px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.screen.is-active {
+  display: flex;
+  animation: fade-in 0.45s ease both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Logo ---------- */
+
+#screen-title { justify-content: space-between; padding-top: 12vh; }
+
+.logo { text-align: center; }
+
+.logo-kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.logo-title {
+  margin: 6px 0 4px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(52px, 17vw, 84px);
+  line-height: 1;
+  color: var(--ink);
+  text-shadow: 0 4px 24px rgba(255, 255, 255, 0.7);
+}
+
+.logo-title em { color: var(--accent); font-style: italic; }
+
+.logo-sub { margin: 0; font-size: 16px; color: var(--ink-soft); font-weight: 500; }
+
+.actions {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.version { font-size: 12px; color: var(--ink-soft); opacity: 0.8; }
+
+/* ---------- Boutons ---------- */
+
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  min-height: 54px;
+  padding: 14px 22px;
+  width: 100%;
+  font: 800 17px/1.1 var(--font-body);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: linear-gradient(180deg, #d9688e, var(--accent));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(200, 88, 126, 0.35);
+}
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--ink);
+  box-shadow: 0 6px 18px rgba(120, 60, 95, 0.12);
+}
+
+.btn--small {
+  width: auto;
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background: #fff;
+  color: var(--accent-dark);
+}
+
+.btn-detail { font-size: 13px; font-weight: 600; opacity: 0.9; }
+
+.link {
+  appearance: none;
+  background: none;
+  border: none;
+  font: 700 14px var(--font-body);
+  color: var(--accent-dark);
+  padding: 10px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+/* ---------- Cartes ---------- */
+
+.card {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 250, 246, 0.94);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 26px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.card-emoji { font-size: 42px; line-height: 1; }
+
+.card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+.card-text { margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.45; }
+.card-hint { margin: 0; font-size: 13px; color: var(--ink-soft); font-style: italic; }
+.card-warning {
+  margin: 0;
+  font-size: 13px;
+  color: var(--accent-dark);
+  background: #fde8ee;
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.input {
+  width: 100%;
+  font: 600 18px var(--font-body); /* ≥ 16 px : évite le zoom auto de Safari */
+  text-align: center;
+  color: var(--ink);
+  padding: 14px;
+  border-radius: 16px;
+  border: 2px solid var(--powder);
+  background: #fff;
+  outline: none;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.input:focus { border-color: var(--accent); }
+
+.wallet { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+
+.chip {
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  box-shadow: 0 3px 10px rgba(120, 60, 95, 0.1);
+}
+
+.stats {
+  margin: 4px 0;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 16px;
+}
+
+.stats div { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.stats dt { color: var(--ink-soft); }
+.stats dd { margin: 0; font-weight: 700; }
+
+/* ---------- Petits éléments ---------- */
+
+.pill {
+  position: absolute;
+  top: calc(var(--safe-top) + 10px);
+  right: 16px;
+  z-index: 5;
+  background: rgba(74, 52, 66, 0.85);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 24px);
+  transform: translate(-50%, 20px);
+  max-width: calc(100% - 32px);
+  background: var(--ink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 20;
+}
+
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+.update-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  top: calc(var(--safe-top) + 12px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 10px 10px 16px;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Feuille « Installer » ---------- */
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(74, 52, 66, 0.35);
+  display: flex;
+  align-items: flex-end;
+  animation: fade-in 0.3s ease both;
+}
+
+.sheet {
+  width: 100%;
+  background: var(--cream);
+  border-radius: 26px 26px 0 0;
+  padding: 24px 22px calc(var(--safe-bottom) + 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sheet-title { margin: 0; font-family: var(--font-display); font-size: 24px; font-weight: 600; }
+.sheet-steps { margin: 0; padding-left: 22px; line-height: 1.9; font-size: 15px; }
+.sheet-note { margin: 0; font-size: 13.5px; color: var(--ink-soft); line-height: 1.45; }
+
+.share-icon {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: #e9e3f5;
+  color: #3478f6;
+  font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen.is-active, .sheet-backdrop { animation: none; }
+}
