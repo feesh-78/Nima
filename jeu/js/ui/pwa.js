@@ -6,16 +6,10 @@
    - l'indicateur hors ligne.
    ======================================================================= */
 
+import { toast } from "./toast.js";
+
 const $ = (sel) => document.querySelector(sel);
 const A2HS_KEY = "nini-city:a2hs-vu";
-
-function toast(text, ms = 3500) {
-  const el = $("#toast");
-  el.textContent = text;
-  el.classList.add("is-visible");
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => el.classList.remove("is-visible"), ms);
-}
 
 function isIos() {
   return /iPhone|iPad|iPod/.test(navigator.userAgent) ||

@@ -32,8 +32,8 @@ class SaveManager {
     const save = await this.peek();
     if (!save) return null;
     this.save = startSession(save);
-    await this.flush();
     this.#start();
+    this.flush().catch((err) => console.error("[sauvegarde]", err)); // en arrière-plan
     return this.save;
   }
 
@@ -41,8 +41,8 @@ class SaveManager {
     const previous = await storage.loadCurrent();
     if (previous) await storage.pushBackup(previous); // jamais de perte définitive
     this.save = createNewSave({ name });
-    await this.flush();
     this.#start();
+    this.flush().catch((err) => console.error("[sauvegarde]", err)); // en arrière-plan
     return this.save;
   }
 
@@ -69,7 +69,7 @@ class SaveManager {
   #start() {
     this.stop();
     this.#lastTick = performance.now();
-    this.#timers.push(setInterval(() => this.flush(), AUTOSAVE_MS));
+    this.#timers.push(setInterval(() => this.flush().catch((err) => console.error("[sauvegarde]", err)), AUTOSAVE_MS));
     this.#timers.push(
       setInterval(() => {
         this.#accumulate();
@@ -102,7 +102,8 @@ class SaveManager {
 export const saveManager = new SaveManager();
 
 // Sauvegarde quand l'app passe en arrière-plan ou se ferme.
+const flushQuietly = () => saveManager.flush().catch((err) => console.error("[sauvegarde]", err));
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden") saveManager.flush();
+  if (document.visibilityState === "hidden") flushQuietly();
 });
-addEventListener("pagehide", () => saveManager.flush());
+addEventListener("pagehide", flushQuietly);
