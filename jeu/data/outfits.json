@@ -1,0 +1,37 @@
+{
+  "outfits": [
+    {
+      "id": "basique",
+      "name": "Jean & t-shirt blanc",
+      "style": "Décontracté",
+      "price": 0,
+      "starter": true,
+      "image": "assets/outfits/basique.png",
+      "canva": "MAHYZlovxfg"
+    },
+    {
+      "id": "preppy",
+      "name": "Preppy chic",
+      "style": "Preppy",
+      "price": 60,
+      "image": "assets/outfits/preppy.png",
+      "canva": "MAHYZqiKOqM"
+    },
+    {
+      "id": "classe",
+      "name": "Trench & escarpins",
+      "style": "Classe",
+      "price": 90,
+      "image": "assets/outfits/classe.png",
+      "canva": "MAHYZp7EO3U"
+    },
+    {
+      "id": "soiree",
+      "name": "Robe de soirée en satin",
+      "style": "Soirée",
+      "price": 150,
+      "image": "assets/outfits/soiree.png",
+      "canva": "MAHYZnLWbBc"
+    }
+  ]
+}

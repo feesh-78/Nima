@@ -5,21 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>Nini City</title>
   <meta name="description" content="Ta vie de styliste à Nini City." />
-  <meta name="theme-color" content="#f7d6de" />
+  <meta name="theme-color" content="#3a0d5c" />
 
   <!-- Mode app sur l'écran d'accueil de l'iPhone -->
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Nini City" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="apple-touch-icon" href="assets/icons/icon-180.png" />
   <link rel="icon" type="image/png" href="assets/icons/icon-192.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" />
+        href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@500;600;700;800;900&display=swap" />
   <link rel="stylesheet" href="css/game.css" />
 </head>
 <body>
@@ -34,7 +34,7 @@
     <section class="screen is-active" id="screen-title">
       <div class="logo">
         <div class="logo-kicker">✦ bienvenue à ✦</div>
-        <h1 class="logo-title">Nini <em>City</em></h1>
+        <h1 class="logo-title">Nini City</h1>
         <p class="logo-sub">Ta vie de styliste commence ici</p>
       </div>
 
@@ -55,7 +55,7 @@
     <!-- ============ NOUVELLE PARTIE ============ -->
     <section class="screen" id="screen-new">
       <form class="card" id="form-new">
-        <div class="card-emoji">👗</div>
+        <div class="card-emoji">💖</div>
         <h2 class="card-title">Comment t'appelles-tu ?</h2>
         <p class="card-text">C'est le prénom que tout le monde connaîtra à Nini City.</p>
         <input class="input" id="input-name" type="text" maxlength="20"
@@ -68,31 +68,58 @@
       </form>
     </section>
 
-    <!-- ============ HUB (provisoire, phase 0) ============ -->
-    <section class="screen" id="screen-hub">
-      <div class="card">
-        <div class="card-emoji">🏙️</div>
-        <h2 class="card-title">Bienvenue à Nini City, <span id="hub-name"></span> !</h2>
-
+    <!-- ============ CHEZ TOI (hub) ============ -->
+    <section class="screen screen--game" id="screen-hub">
+      <header class="topbar">
+        <button class="icon-btn" id="btn-home" aria-label="Retour à l'accueil">⌂</button>
+        <div class="topbar-name" id="hub-name"></div>
         <div class="wallet">
-          <span class="chip">💰 <b id="hub-coins"></b> pièces</span>
-          <span class="chip">💎 <b id="hub-sparkles"></b> paillettes</span>
+          <span class="chip">💰 <b class="js-coins"></b></span>
+          <span class="chip">💎 <b class="js-sparkles"></b></span>
         </div>
+      </header>
 
-        <dl class="stats">
-          <div><dt>Temps de jeu</dt><dd id="hub-playtime"></dd></div>
-          <div><dt>Arrivée en ville</dt><dd id="hub-created"></dd></div>
-        </dl>
-
-        <p class="card-text">
-          🏗️ La ville est encore en chantier. Prochaine étape : créer ton
-          personnage et choisir le style du jeu.
-        </p>
-        <p class="card-hint">
-          Petit test : ferme complètement l'app puis rouvre-la, ta partie t'attend.
-        </p>
-        <button class="btn btn--ghost" id="btn-hub-back">Retour à l'accueil</button>
+      <div class="stage">
+        <img class="heroine" id="hub-heroine" alt="Ton personnage" />
+        <div class="podium"></div>
       </div>
+
+      <p class="hub-caption" id="hub-caption"></p>
+
+      <nav class="hub-menu">
+        <button class="menu-btn" id="btn-wardrobe"><span>👗</span>Dressing</button>
+        <button class="menu-btn" id="btn-shop"><span>🛍️</span>Boutique</button>
+        <button class="menu-btn" id="btn-gift"><span>🎁</span>Cadeau</button>
+      </nav>
+      <p class="hub-soon">🏙️ Bientôt : la ville à explorer et des mini-jeux pour gagner des pièces.</p>
+    </section>
+
+    <!-- ============ DRESSING ============ -->
+    <section class="screen screen--game" id="screen-wardrobe">
+      <header class="topbar">
+        <button class="icon-btn js-back" aria-label="Retour">‹</button>
+        <h2 class="topbar-title">Mon dressing</h2>
+        <div class="wallet"><span class="chip">💰 <b class="js-coins"></b></span></div>
+      </header>
+
+      <div class="stage stage--small">
+        <img class="heroine" id="wardrobe-preview" alt="Aperçu de la tenue" />
+        <div class="podium"></div>
+      </div>
+      <p class="outfit-label" id="wardrobe-label"></p>
+
+      <div class="thumbs" id="wardrobe-list"></div>
+      <button class="btn btn--primary" id="btn-wear">Porter cette tenue</button>
+    </section>
+
+    <!-- ============ BOUTIQUE ============ -->
+    <section class="screen screen--game" id="screen-shop">
+      <header class="topbar">
+        <button class="icon-btn js-back" aria-label="Retour">‹</button>
+        <h2 class="topbar-title">La Boutique</h2>
+        <div class="wallet"><span class="chip">💰 <b class="js-coins"></b></span></div>
+      </header>
+      <div class="shop-grid" id="shop-list"></div>
     </section>
   </main>
 

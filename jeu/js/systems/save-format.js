@@ -9,14 +9,21 @@
      3) ajouter un test dans tests/save-format.test.js.
    ======================================================================= */
 
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
-/* Une entrée par version : MIGRATIONS[n] transforme une sauvegarde v(n) en v(n+1).
-   Exemple pour plus tard :
-   1: (s) => ({ ...s, version: 2, wardrobe: [] }), */
-const MIGRATIONS = {};
+/* Une entrée par version : MIGRATIONS[n] transforme une sauvegarde v(n) en v(n+1). */
+const MIGRATIONS = {
+  // v1 → v2 : arrivée du dressing, de la tenue portée et du cadeau du jour.
+  1: (s) => ({ ...s, version: 2, ...startingStyle() }),
+};
 
 export const STARTING_WALLET = { coins: 100, sparkles: 5 };
+export const STARTER_OUTFIT = "basique";
+export const DAILY_GIFT_COINS = 30;
+
+function startingStyle() {
+  return { wardrobe: [STARTER_OUTFIT], outfit: STARTER_OUTFIT, lastGiftDay: null };
+}
 
 export function sanitizeName(name) {
   const clean = String(name ?? "").replace(/\s+/g, " ").trim().slice(0, 20);
@@ -32,6 +39,7 @@ export function createNewSave({ name, now = Date.now() } = {}) {
     player: { name: sanitizeName(name) },
     wallet: { ...STARTING_WALLET },
     stats: { playTimeSec: 0, sessions: 1 },
+    ...startingStyle(),
   };
 }
 
@@ -49,6 +57,11 @@ export function validateSave(save) {
   if (!isNum(save.wallet?.sparkles)) errors.push("paillettes invalides");
   if (!isNum(save.stats?.playTimeSec)) errors.push("temps de jeu invalide");
   if (!Number.isInteger(save.stats?.sessions) || save.stats.sessions < 1) errors.push("sessions invalides");
+  if (!Array.isArray(save.wardrobe) || !save.wardrobe.length || !save.wardrobe.every((id) => typeof id === "string")) {
+    errors.push("dressing invalide");
+  }
+  if (!save.wardrobe?.includes(save.outfit)) errors.push("tenue portée absente du dressing");
+  if (save.lastGiftDay !== null && typeof save.lastGiftDay !== "string") errors.push("cadeau du jour invalide");
   return errors;
 }
 
@@ -83,6 +96,47 @@ export function addPlayTime(save, seconds) {
 
 export function startSession(save) {
   return { ...save, stats: { ...save.stats, sessions: save.stats.sessions + 1 } };
+}
+
+/* ---------- Dressing et boutique ---------- */
+
+export function canAfford(save, outfit) {
+  return save.wallet.coins >= outfit.price;
+}
+
+/* Achète une tenue (objet de data/outfits.json). Lève une erreur claire sinon. */
+export function buyOutfit(save, outfit) {
+  if (save.wardrobe.includes(outfit.id)) throw new Error("tu as déjà cette tenue");
+  if (!canAfford(save, outfit)) throw new Error("pas encore assez de pièces");
+  return {
+    ...save,
+    wallet: { ...save.wallet, coins: save.wallet.coins - outfit.price },
+    wardrobe: [...save.wardrobe, outfit.id],
+  };
+}
+
+export function wearOutfit(save, outfitId) {
+  if (!save.wardrobe.includes(outfitId)) throw new Error("cette tenue n'est pas dans ton dressing");
+  return { ...save, outfit: outfitId };
+}
+
+/* Jour local au format AAAA-MM-JJ (le cadeau revient chaque jour à minuit). */
+export function dayKey(date = new Date()) {
+  const p = (n) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`;
+}
+
+export function giftAvailable(save, today = dayKey()) {
+  return save.lastGiftDay !== today;
+}
+
+export function claimDailyGift(save, today = dayKey()) {
+  if (!giftAvailable(save, today)) throw new Error("cadeau déjà ouvert aujourd'hui, reviens demain");
+  return {
+    ...save,
+    lastGiftDay: today,
+    wallet: { ...save.wallet, coins: save.wallet.coins + DAILY_GIFT_COINS },
+  };
 }
 
 /* 45 → "moins d'une minute", 754 → "12 min", 3900 → "1 h 05" */
