@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "cocos-elementor": {
+      "type": "http",
+      "url": "https://cocos-house.be/wp-json/elementor/mcp/",
+      "headers": {
+        "Authorization": "Basic ${WP_ELEMENTOR_AUTH}"
+      }
+    }
+  }
+}
